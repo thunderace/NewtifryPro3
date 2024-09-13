@@ -12,4 +12,5 @@
 .DS_Store
 .metadata/*
 **.hprof
-google-services*.*
+newtifryPro/google-services*.json
+newtifryPro/release/*
