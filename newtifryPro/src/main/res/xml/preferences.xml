@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/preferences" >
+	<PreferenceCategory
+		android:title="@string/serverless_settings_category" >
+		<Preference
+			android:key="mailFCMId"
+			android:summary="@string/email_fcmid_summary"
+			android:title="@string/email_fcmid"
+			android:enabled="true"
+			android:selectable="true"/>
+		<Preference
+			android:key="preference_test"
+			android:summary="@string/serverless_mode_test_summary"
+			android:title="@string/serverless_mode_test"
+			android:enabled="true"
+			android:selectable="true"/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/notification_settings_category" >
+    	<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/notification_enable_checkbox" 
+		    android:key="notificationEnable" 
+		    android:defaultValue="true"/>	
+<!--     	<CheckBoxPreference  -->
+<!-- 			android:persistent="true" -->
+<!-- 		    android:title="@string/always_notify_smartwatch_checkbox"  -->
+<!-- 		    android:summary="@string/always_notify_smartwatch_checkbox_summary"  -->
+<!-- 		    android:key="alwaysNotifySmartWatch"  -->
+<!-- 		    android:defaultValue="true"/>	 -->
+    	<Preference
+		    android:key="notificationSettings" 
+            android:icon="@drawable/ic_menu_notification_24dp"
+            android:title="@string/notification_settings_title"
+            android:dependency="notificationEnable">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.newtifry.pro3.preferences.NotificationPreferenceActivity"
+                android:targetPackage="com.newtifry.pro3" />
+        </Preference>
+	</PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/display_settings_category" >
+        <Preference
+            android:icon="@drawable/ic_menu_display_24dp"
+            android:title="@string/display_settings_title" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.newtifry.pro3.preferences.DisplayPreferenceActivity"
+                android:targetPackage="com.newtifry.pro3" />
+        </Preference>
+	</PreferenceCategory>
+    <PreferenceCategory android:title="@string/advanced_settings_category" >
+        <Preference
+            android:icon="@drawable/ic_menu_advanced_preferences_24dp"
+            android:title="@string/advanced_settings_title" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.newtifry.pro3.preferences.AdvancedPreferenceActivity"
+                android:targetPackage="com.newtifry.pro3" />
+        </Preference>
+	</PreferenceCategory>
+</PreferenceScreen>

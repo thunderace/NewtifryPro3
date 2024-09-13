@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+ * Copyright (C) 2009 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This file is a copy of the file from the eyes-free project:
+ * http://code.google.com/p/eyes-free/source/browse/#svn/trunk/AndroidTTS/res/values
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string-array name="ttsAudioStreamEntries">
+        <item>Alarm Stream</item>
+        <item>Notification Stream</item>
+        <item>Music Stream</item>
+    </string-array>
+    <string-array name="ttsAudioStreamvalues">
+        <item>ALARM</item>
+        <item>NOTIFICATION</item>
+        <item>MUSIC</item>
+    </string-array>
+    
+    
+    <string-array name="quietHoursDefaultValues">
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+    <string-array name="quietHoursApplyToEntries">
+        <item>Alert</item>
+        <item>Warning</item>
+        <item>Information</item>
+        <item>No priority</item>
+    </string-array>
+    <string-array name="quietHoursApplyToValues">
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+    
+    <string-array name="tasker_fields_array">
+        <item>Source</item>
+        <item>Title</item>
+        <item>Priority</item>
+    </string-array>
+
+    <string-array name="notification_visibility_entries">
+        <item>Private (default)</item>
+        <item>Public</item>
+        <item>Secret</item>
+    </string-array>
+    <string-array name="notification_visibility_values">
+        <item>0</item>
+        <item>1</item>
+        <item>-1</item>
+    </string-array>
+    <string-array name="date_format_entries">
+        <item>Default</item>
+        <item>24H</item>
+        <item>12H AM/PM</item>
+    </string-array>
+    <string-array name="date_format_values">
+        <item>Default</item>
+        <item>24H</item>
+        <item>12H AM/PM</item>
+    </string-array>
+
+
+</resources>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/display_list_preferences" >
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/small_row" 
+		    android:defaultValue="true" 
+		    android:summary="@string/small_row_summary" 
+		    android:key="smallRow"/>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/display_invisible_messages" 
+		    android:defaultValue="false" 
+		    android:summary="@string/display_invisible_messages_summary" 
+		    android:key="showInvisibleMessages"/>
+		</PreferenceCategory>
+				
+    <PreferenceCategory android:title="@string/display_image_preferences" >
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/show_images" 
+		    android:defaultValue="true" 
+		    android:summary="@string/show_images_summary" 
+		    android:key="showImage"/>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/download_only_wifi" 
+		    android:defaultValue="false" 
+		    android:summary="@string/download_only_wifi_summary" 
+		    android:key="onlyImageWithWifi"
+		    android:dependency="showImage"/>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/preload_images" 
+		    android:defaultValue="true" 
+		    android:summary="@string/preload_images_summary" 
+		    android:key="preloadImage"
+		    android:dependency="showImage"/>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/shrink_images" 
+		    android:defaultValue="false" 
+		    android:summary="@string/shrink_images_summary" 
+		    android:key="shrinkImages"
+		    android:dependency="showImage"/>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/cache_images" 
+		    android:defaultValue="true" 
+		    android:summary="@string/cache_images_summary" 
+		    android:key="cacheImages"
+		    android:dependency="showImage"/>
+		<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+			android:persistent="true"
+		    android:key="cacheImagesDelay" 
+		    android:summary="@string/cache_images_delay_summary" 
+		    android:title="@string/cache_images_delay"
+			android:inputType="number"
+		    android:defaultValue="24"
+		    android:digits="0123456789" 
+		    android:maxLength="2"
+		    android:dependency="showImage">
+		</com.afollestad.materialdialogs.prefs.MaterialEditTextPreference>
+		<Preference 
+		    android:key="purgeImageCache" 
+		    android:title="@string/cache_images_purge" 
+		    android:summary="@string/cache_images_purge_summary" 
+		    android:enabled="true" 
+		    android:selectable="true"/>
+    </PreferenceCategory>
+	
+    <PreferenceCategory android:title="@string/display_priority_preferences" >
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/use_priority_color" 
+		    android:defaultValue="true" 
+		    android:summary="@string/use_priority_color_summary" 
+		    android:key="usePriorityColors"/>
+				
+		<com.newtifry.pro3.preference.colorpicker.ColorPickerPreference
+			android:persistent="true"
+		    android:title="@string/choose_title_alert_color" 
+		    android:summary="@string/choose_title_alert_color_summary" 
+		    android:key="alertTitleColor"
+		    android:defaultValue="@integer/COLOR_RED"  
+		    />
+	
+		<com.newtifry.pro3.preference.colorpicker.ColorPickerPreference
+			android:persistent="true"
+		    android:title="@string/choose_title_warning_color" 
+		    android:summary="@string/choose_title_warning_color_summary" 
+		    android:key="warningTitleColor" 
+		    android:defaultValue="@integer/COLOR_YELLOW"  
+		    />
+		
+		<com.newtifry.pro3.preference.colorpicker.ColorPickerPreference
+			android:persistent="true"
+		    android:title="@string/choose_title_info_color" 
+		    android:summary="@string/choose_title_info_color_summary" 
+		    android:defaultValue="@integer/COLOR_GREEN"  
+		    android:key="infoTitleColor" 
+		    />
+    </PreferenceCategory>
+		
+</PreferenceScreen>

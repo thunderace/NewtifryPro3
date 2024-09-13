@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!-- 	NOTIFICATION -->
+    <string name="notificationFormatOne">one new message</string>
+    <string name="notificationFormat" formatted="false">%d new messages</string>
+    <string name="notificationXMoreMessages" formatted="false">%d more</string>
+    <string name="notificationNoCPUSleepMode">CPU sleep mode is disable</string>
+    <string name="notificationDeleteLabel">Delete</string>
+    <string name="notificationSeenLabel">Seen</string>
+    <string name="notificationSeenAllLabel">Mark all seen</string>
+    <string name="wear_notification_images_count" formatted="false">%d image%s.</string>
+    <string name="wear_notification_show_on_mobile">Open</string>
+	<string name="information_notification_channel_name">Information messages</string>
+	<string name="warning_notification_channel_name">Warning messages</string>
+	<string name="alert_notification_channel_name">Alert messages</string>
+	<string name="no_priority_notification_channel_name">Other messages</string>
+
+    <!-- 	/NOTIFICATION     -->
+
+    
+<!--     ABOUT -->
+    <string name="about_title">About</string>
+    <string name="about_about">About</string>
+	<string name="about_url_to_load">about_en</string>
+    <string name="changelog_title">Changelog</string>
+    <string name="changelog_thanks">Thank you for installing NewtifryPro!</string>
+	<string name="help_changelog_url_to_load">changelog_en</string>    
+    <string name="help_fcm_title">How to</string>
+    <string name="help_fcm_text">How to get FCM senderid and APIKey</string>
+	<string name="help_fcm_url_to_load">fcm_id_help_en2</string>
+    <string name="opensource_title">Opensource</string>
+    <string name="help_opensource_text">Opensource libraries</string>
+    <string name="help_opensource_url_to_load">opensource_en</string>    
+<!-- 	/ABOUT -->
+
+
+<!-- PREFERENCES -->
+    <string name="preferences">Preferences</string>
+	    <string name="serverless_settings_category">FCM settings</string>
+	    
+		    <string name="email_fcmid">Email Device ID</string>
+		    <string name="email_fcmid_summary">Email the FCM ID of this device.</string>
+			<string name="user_topic">Device topic (Prefix this topic with your deviceID to use it)</string>
+			<string name="user_topic_summary">Prefix this topic with your deviceID to use it</string>
+		    <string name="serverless_mode_test">Test</string>
+		    <string name="serverless_mode_test_summary">Send a message to your device.</string>
+			<string name="user_topic_error_title">Invalid topic name</string>
+			<string name="user_topic_error_text">Only a-z, A-Z, 0-9 and - are allowed (no space)</string>
+
+	    <string name="notification_settings_category">Notification Settings</string>
+	        <string name="notification_enable_checkbox">Enable notifications</string>
+	        <string name="always_notify_smartwatch_checkbox">Notify external apps</string>
+    		<string name="always_notify_smartwatch_checkbox_summary">Always notify tasker and smartwatch2</string>
+    		
+    		<string name="notification_settings_title">Notification settings</string>
+    		<string name="notification_settings_summary">Change how notifications are delivered.</string>
+	    		<string name="notification_quiet_hours_settings">Quiets Hours</string>
+	    			<string name="quiet_hours">Quiet hours</string>
+	    		    <string name="quiet_hours_summary">No sound, no vibration, no led.</string>
+	    			<string name="quiet_hours_start_title">Starts</string>
+	    			<string name="quiet_hours_end_title">Ends</string>
+	    		    <string name="timepreference_positive_button_text">Set</string>
+	    		    <string name="timepreference_negative_button_text">Cancel</string>
+	    			<string name="quiet_priorities_apply">Apply to&#8230;</string>
+	    		    <string name="quiet_priorities_apply_summary" formatted="false">%s</string>
+	    		    <string name="quiet_priorities_apply_all_summary">All priorities.</string>
+	    		    	    		    	    		    	    		    	    		    
+			    <string name="use_notifier_pro">Use Notifier Pro</string>
+	    		<string name="use_notifier_pro_summary">Use only Notifier Pro for notifications.</string>
+	    		<string name="notifierProNotInstalled">Notifier Pro is not installed.</string>
+				<string name="use_black_action_icons">Use black action icons.</string>
+				<string name="use_black_action_icons_summary">For white background notification.</string>
+
+			    <string name="play_ringtone">Play ringtone</string>
+			    <string name="play_ringtone_summary">Play a ringtone when a notification comes in.</string>
+			    <string name="choose_notification_tone">Select Notification Tone</string>
+			    <string name="choose_notification_tone_summary" formatted="false">Actual : %s.</string>
+					<string name="sound_settings_title">Sound settings</string>
+					<string name="sound_by_priority">Select Notification Tone by priority</string>
+					<string name="choose_notification_tone_alert">Select Notification Tone for Alert</string>
+					<string name="choose_notification_tone_warning">Select Notification Tone for Warning</string>
+					<string name="choose_notification_tone_normal">Select Notification Tone for Normal</string>
+					<string name="choose_notification_tone_none">Select Notification Tone for No priority</string>
+			    <string name="silent">Silent</string>
+			    <string name="default_tone" >Default</string>
+
+				<string name="choose_notification_visibility">Select Notification Visibility</string>
+				<string name="choose_notification_visibility_summary" formatted="false">Actual : %s.</string>
+					<string name="notification_visibility_settings_title">Visibility settings</string>
+					<string name="notification_visibility_by_priority">Select Visibility by priority</string>
+					<string name="choose_notification_visibility_alert">Select Visibility for Alert</string>
+					<string name="choose_notification_visibility_warning">Select Visibility for Warning</string>
+					<string name="choose_notification_visibility_normal">Select Visibility for Normal</string>
+					<string name="choose_notification_visibility_none">Select Visibility for No priority</string>
+					<string name="notification_visibility_private">Private</string>
+					<string name="notification_visibility_public">Public</string>
+					<string name="notification_visibility_secret">Secret</string>
+
+			    <string name="vibrate">Vibrate</string>
+			    <string name="vibrate_summary">Vibrate when a notification comes in.</string>
+			    <string name="notify_everytime">Notify for every message</string>
+			    <string name="notify_everytime_summary">If unchecked, no sound/vibration until last notification dismissed.</string>
+				<string name="led_flash">Flash the LED</string>
+				<string name="led_flash_summary">Flash the LED for a notification.</string>
+				<string name="max_priority">Max Priority</string>
+				<string name="max_priority_summary">Set the highest notification priority.</string>
+			    <string name="speak_message">Speak the message</string>
+			    <string name="speak_message_summary">Speak out the message using Text to Speech.</string>
+			    <string name="speak_settings_title">Speak Message Settings</string>
+			    <string name="speak_settings_summary">Change speak settings.</string>
+				    <string name="preview">Preview</string>
+				    <string name="preview_summary">Preview the selected language and speed settings.</string>
+				    <string name="preview_speak">We will newtifry you.</string>
+			    	<string name="priority_speak_title">Speak settings by priority</string>
+			    	<string name="other_speak_settings_title">Other speak settings</string>
+				    	<string name="delay_readout">Delay reading</string>
+						<string name="delay_readout_summary" formatted="false">Delay reading the message for %d second%s.</string>
+						<string name="delay_readout_no_delay_summary">No delay.</string>
+						<string name="read_speed">Speech Rate</string>
+					    <string name="read_speed_summary">Select how fast to read the message.</string>
+					    <string name="shakestop">Enable Shake to Stop</string>
+					    <string name="shakestop_activate">Enable</string>
+					    <string name="shakethreshhold">Shake Threshold</string>
+					    <string name="shakethreshhold_summary">Currently %d, default 1500.</string>
+					    <string name="shakewaittime">Shake Wait Time</string>
+					    <string name="shakewaittime_summary" formatted="false">Wait %d second%s for a shake event.</string>
+					    <string name="max_length">Readout text length</string>
+					    <string name="max_length_summary" formatted="false">Read maximum %d chars.</string>
+					    <string name="max_length_summary_no_limit">Unlimited.</string>
+					    <string name="limit_length_to_speak">Don\'t speak messages longer than&#8230;</string>
+					    <string name="limit_length_to_speak_summary" formatted="false">%d characters.</string>
+					    <string name="limit_length_to_speak_summary_no_limit">Unspecified.</string>
+					    <string name="speakformat">TTS Output format</string>
+					    <string name="speakformat_summary" formatted="false">%s is source, %m is message, %t is title. Default %t %m.</string>
+					    <string name="tts_audio_stream_title">TTS Audio Stream</string>
+					    <string name="tts_audio_stream_summary">The audio stream used to speak messages.</string>
+								    			    		
+		<string name="display_settings_category">Display</string>
+			<string name="display_settings_title">Display Settings</string>
+			<!--<string name="display_settings_summary"></string>-->
+			    <string name="display_list_preferences">List</string>
+					<string name="small_row">Reduced height rows</string>
+					<string name="small_row_summary">Use reduced height to display more rows (need restart or rotate).</string>
+					<string name="display_invisible_messages">Show invisible messages</string>
+					<string name="display_invisible_messages_summary">Show messages with priority &lt; 0.</string>
+										
+			    <string name="display_image_preferences">Images</string>
+					<string name="show_images">Show image</string>
+					<string name="show_images_summary">Download and show image in message detail</string>
+					<string name="download_only_wifi">Wifi only</string>
+					<string name="download_only_wifi_summary">Download image only with wifi.</string>
+					<string name="preload_images">Preload image</string>
+					<string name="preload_images_summary">Download image at message reception</string>
+					<string name="cache_images_purge">Purge Image cache</string>
+	    		    <string name="cache_images_purge_summary" formatted="false">%d images in cache.</string>
+					<string name="cache_images">Image Caching</string>
+					<string name="cache_images_summary">Preload and cache image if possible</string>
+					<string name="cache_images_delay">Image Caching duration</string>
+					<string name="cache_images_delay_summary" formatted="false">%d hour%s.</string>
+					<string name="shrink_images">Resize image</string>
+					<string name="shrink_images_summary">Resize image to fit the screen (reduce memory footprint and zoom capacity)</string>
+										
+			    <string name="display_priority_preferences">Priorities</string>
+					<string name="use_priority_color">Use priority colors</string>
+					<string name="use_priority_color_summary">Use message title priority colors</string>
+					<string name="choose_title_alert_color">Alert title color</string>
+					<string name="choose_title_alert_color_summary">Choose alert message title color</string>
+					<string name="choose_title_warning_color">Warning title color</string>
+					<string name="choose_title_warning_color_summary">Choose warning message title color</string>
+					<string name="choose_title_info_color">Information title color</string>
+					<string name="choose_title_info_color_summary">Choose information message title color</string>
+					
+		<string name="advanced_settings_category">Advanced</string>
+			<string name="advanced_settings_title">Advanced Settings</string>
+				<string name="advanced_messages_preferences">Messages</string>
+					<string name="group_messages">Regroup identical messages</string>
+					<string name="group_messages_summary">Regroup same messages in an single message.</string>
+					<string name="auto_clean_old_messages">Delete old messages</string>
+					<string name="auto_clean_old_messages_summary" formatted="false">Automatically delete messages older than %d day%s.</string>
+					<string name="no_auto_clean_old_messages_summary">No automatic deletion</string>
+					<string name="message_count_limit">Message count limit</string>
+					<string name="message_count_limit_summary" formatted="false">Up to %d message%s.</string>
+					<string name="message_count_no_limit_summary">No limit.</string>
+					<string name="confirm_delete_all">Delete all confirmation</string>
+					<string name="confirm_delete_all_summary">Confirm delete all messages.</string>
+					<string name="unlock_on_long_press">Unlock messages</string>
+					<string name="unlock_on_long_press_summary">Allow to unlock messages with a long press.</string>
+					<string name="enable_undo">Undo delete</string>
+					<string name="enable_undo_summary">Allow to undelete last deleted message.</string>
+					<string name="debug_mode">Mode debug</string>
+					<string name="debug_mode_summary">Allow to display debug log in message list.</string>
+					<string name="log_level_verbose">Verbose</string>
+					<string name="log_level_verbose_summary">Log lot of debug messages.</string>
+
+					<string name="do_not_delete_unseen">Delete unseen message</string>
+					<string name="do_not_delete_unseen_summary">Allow to delete unseen messages.</string>
+					<string name="do_not_delete_pinned_and_locked">Delete pinned/locked message</string>
+					<string name="do_not_delete_pinned_and_locked_summary">Allow to delete of pinned or locked messages.</string>
+					<string name="delete_untagged_messages">Delete untagged messages</string>
+					<string name="delete_untagged_messages_summary">Delete message when the tag is removed.</string>
+					<string name="allow_unlock_tagged_messages">Allow tagged messages unlock</string>
+					<string name="allow_unlock_tagged_messages_summary">Tagged messages can be manualy unlocked.</string>
+					<string name="delete_all_seen_sticky_and_locked_too">Delete all seen apply to pinned/locked</string>
+					<string name="delete_all_seen_sticky_and_locked_too_summary">Apply the \'Delete all seen\' command pinned and locked messages too.</string>
+										
+				<string name="advanced_notification_sound_preferences">Notification Sound</string>
+					<string name="notification_audio_stream_title">Notification Audio Stream</string>
+					<string name="notification_audio_stream_summary">The audio stream used to play the notification sound.</string>
+				<string name="advanced_notification_format_preferences">Expanded Notification</string>
+					<string name="notificationformat">Notification formating</string>
+				    <string name="notificationformat_summary" formatted="false">%d is date, %s is source, %m is message, %t is title. Default %d : %s - %t : %m.</string>
+					
+				<string name="advanced_misc_preferences">Misc</string>
+					<string name="prevent_cpu_sleep_title">Prevent CPU sleep mode</string>
+					<string name="prevent_cpu_sleep_summary">Use this to reduce the message reception delay. Heavy Battery consumption!</string>
+					<string name="date_time_format_title">Date/Time Format</string>
+					<string name="show_log">Show log</string>
+			<string name="crypto_preferences">Encryption</string>
+				<string name="crypto_password">Password</string>
+				<string name="crypto_password_summary">Password used to decrypt encrypted messages</string>
+				
+									
+<!-- /PREFERENCES     -->
+
+<!-- SHORTCUTS -->
+	<string name="mark_all_seenshortcut_short_label">Mark all seen</string>
+	<string name="mark_all_seenshortcut_long_label">Mark all message as read</string>
+	<string name="mark_all_seenshortcut_disabled_message">No unread message</string>
+	<string name="shortcut_disabled_notification">Disable notification</string>
+	<string name="shortcut_disabled_notification_long_message">Disable notification</string>
+	<string name="shortcut_disabled_notification_short_message">Disable notification</string>
+
+<!-- /SHORTCUTS -->
+
+<!-- MAIL -->
+    <string name="fcm_id_email_subject" formatted="false">My %s NewtifryPro FCM ID</string>
+    <string name="fcm_id_email_body">The newtifry FCM ID you need is \n%s\nRegards</string>
+<!-- /MAIL -->
+
+<!-- MENU -->
+    <string name="delete_all">Delete all</string>
+    <string name="delete_read">Delete seen messages</string>
+    <string name="sort_by_source">Sort by source</string>
+    <string name="sort_by_date">Sort by date</string>
+    <string name="sort_by_priority">Sort by priority</string>
+    <string name="mark_all_as_seen">Mark all as Seen</string>
+    <string name="register_menu_entry">Register</string>
+    <string name="unregister_menu_entry">Unregister</string>
+    <string name="preference_menu_entry">Preferences</string>
+    <string name="stop_speak_now">Stop speak now</string>
+    <string name="start_speak">Start message speak</string>
+    <string name="show_image">Show image</string>
+    <string name="mark_unread_menu_entry">Set unread</string>
+    <string name="stick_menu_entry">Pin message</string>
+    <string name="unstick_menu_entry">Unpin message</string>
+    <string name="unlock_menu_entry">Unlock message</string>
+    <string name="lock_menu_entry">Lock message</string>
+    
+    
+<!-- /MENU -->
+
+    <string name="need_tts_data_installed">You don\'t have the TTS data installed - redirecting you to the data.</string>
+    <string name="google_account_needed">You need at least one google account configured.</string>
+    <string name="fcm_package_required">Your device does not support the Google FCM system.</string>
+    <string name="no_message">No message</string>
+    <string name="recent_messages_withcount" formatted="false">%d messages (%d)</string>
+    <string name="fatal_error">Fatal Error</string>
+    <string name="alert_title">Alert</string>
+    <string name="confirm_delete_title">Delete Confirmation</string>
+    <string name="confirm_delete_read_messages">Do you really want to delete all seen messages?</string>
+    <string name="confirm_delete_all_messages">Do you really want to delete all messages?</string>
+    
+    <string name="confirm_unregister_title">Unregistration Confirmation</string>
+    <string name="confirm_unregister_message">Do you really want to cancel registration?</string>
+    
+    
+<!--     FCM -->
+	<string name="fcm_registration_progress_title">Registration</string>
+	<string name="fcm_registration_progress_text">FCM registration. Please wait&#8230;</string>
+	<string name="fcm_registration_success_text">FCM registration success.</string>
+	<string name="fcm_unregistration_success_text">FCM unregistration success.</string>
+	<string name="fcm_error_title">FCM Error</string>
+	<string name="fcm_unregistration_progress_title">Unregistration</string>
+	<string name="fcm_unregistration_progress_text">FCM unregistration. Please wait&#8230;</string>
+	<string name="fcm_not_supported">FCM service isnt\'t supported by your device. Exit</string>
+	<string name="sender_id">FCM Sender Id</string>
+	<string name="sender_id_summary" formatted="false">%s</string>
+	<string name="sender_id_summary_not_registred" formatted="false">%s - Not registred</string>
+	<string name="sender_id_summary_not_set">Sender Id is not set.</string>
+    <string name="test_message_success">Test message successfully sent.</string>
+    <string name="test_message_message">Message for registration validation.</string>
+    <string name="test_message_title">Test message.</string>
+    <string name="test_message_source">NewtifryPro.</string>
+    <string name="fcm_send_title">FCM test message</string>
+	<string name="fcm_send_text">Sending&#8230;</string>
+	<string name="fcm_update_topic">Updating&#8230;</string>
+    <string name="fcm_registration_text">Your are not registered! Go to menu and register.</string>
+    <string name="fcm_deviceid_refresh">Your deviceID has changed! Go to settings.</string>
+<!-- /FCM -->
+
+<!-- ERROR -->
+	<string name="image_load_error" formatted="false">Image #%d - Load error</string>
+	<string name="image_alone_load_error">Load error</string>
+	<string name="cannot_delete_unread_message">Unseen messages cannot be deleted (See advanced preferences)</string>
+	<string name="cannot_delete_locked_message">Locked messages cannot be deleted</string>
+	<string name="image_load_no_wifi" formatted="false">Image #%d - Load Error - No Wifi</string>
+	<string name="image_alone_load_no_wifi" formatted="false">Load Error - No Wifi</string>
+				
+<!-- /ERROR -->
+
+<!-- 	DIALOG -->
+	<string name="sender_id_text">Please enter your Sender Id</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+<!-- 	/DIALOG -->
+<!-- 	PRIORITIES     -->
+	<string name="alert">Alert</string>
+	<string name="warning">Warning</string>
+	<string name="info">Info</string>
+	<string name="none">None</string>
+	<string name="none_summary">None : consider uncheck \'Quiet Hours\'</string>
+	<string name="all_summary">All</string>
+<!-- 	/PRIORITIES     -->
+    
+<!-- LICENSE     -->
+    <string name="check_license_error">License Check Error</string>
+    <string name="check_license_retry">License Check Retry</string>
+    <string name="check_license_denied">License Check Denied</string>
+    <string name="check_license_success">License Check Success</string>
+        
+<!-- /LICENSE     -->
+    
+<!--     COLOR PICKER -->
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>    
+<!--    / COLOR PICKER -->
+
+<!--     ENHANCED LIST VIEW -->
+	<string name="elv_undo">Undo</string>
+	<string name="elv_item_deleted">Message deleted</string>
+<!--    / ENHANCED LIST VIEW -->
+
+<!--     LOCALE/TASKER -->
+    <string name="locale_select_action">Select action</string>
+    <string name="showLastMessage">Show last message</string>
+    <string name="showMessage">Show %npid message</string>
+    <string name="markLastMessageSeen">Mark last seen</string>
+    <string name="markAllSeen">Mark all seen</string>
+    <string name="setSpeakOff">Speak off</string>
+    <string name="setSpeakOn">Speak on</string>
+    <string name="setNotificationOff">Notification off</string>
+    <string name="setNotificationOn">Notification on</string>
+    
+    
+    <string name="tasker_option_save">Save</string>
+    <string name="tasker_option_cancel">Cancel</string>
+    <string name="np_event_name">NewtifryPro</string>
+    <string name="tasker_conf_title">Nothing to do here. Tasker will be notified for each new message.</string>
+    <!-- Event name -->
+    <string name="np_new_message">New message</string>
+    
+<!--    / LOCALE/TASKER -->
+
+	<string name="send_test_message_error">Sending error : </string>
+	<string name="fcm_register_message_error">Registration error. Please try again.</string>
+	<string name="fcm_register_message_success">Registration completed.</string>
+	<string name="topic_set_error">Topic change failed. Please try again.</string>
+	<string name="topic_set_success">Topic change completed.</string>
+	topic_set_success
+</resources>

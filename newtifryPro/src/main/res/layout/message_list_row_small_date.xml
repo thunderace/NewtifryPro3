@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+      android:background="@drawable/row_background">
+
+    <View
+        android:id="@+id/main_app_topspacer"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp" >
+    </View>
+
+
+	<RelativeLayout
+	    android:id="@+id/main_app_top_frame"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="10dp"
+		android:layout_below="@+id/main_app_topspacer"
+	    android:paddingRight="10dp"
+	    android:paddingBottom="1dp"
+	    android:paddingTop="3dp">
+	
+		<RelativeLayout
+		    android:id="@+id/main_app_image_frame"
+		    android:layout_width="58dp"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentRight="true"
+		    android:layout_alignParentTop="true" >
+
+		    <TextView
+		        android:id="@+id/message_row_timestamp"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:paddingTop="1dp"
+		        android:text="20H12PM"
+		        android:textSize="10sp" />
+		    
+		    <ImageView
+				android:id="@+id/message_row_image"
+			    android:layout_width="wrap_content"
+		        android:layout_below="@+id/message_row_timestamp"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentRight="true"
+			    android:paddingTop="1dp"
+			    android:src="@drawable/icon_image" >
+	    	</ImageView>
+	
+		    <ImageView
+		        android:id="@+id/message_row_url"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+			    android:layout_alignParentRight="true"
+		        android:layout_below="@+id/message_row_image"
+			    android:paddingTop="1dp"
+		        android:src="@drawable/icon_url2" >
+		    </ImageView>
+		</RelativeLayout>
+					
+		<RelativeLayout
+		    android:id="@+id/main_app_text_frame"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentTop="true"
+		    android:layout_toLeftOf="@+id/main_app_image_frame"
+		    android:paddingBottom="3dp" >
+
+		    <TextView
+		        android:id="@+id/message_row_title_or_source"
+		        style="@style/MainTableText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:ellipsize="end"
+		        android:maxLines="1"
+		        android:singleLine="true"
+		        android:text="Source : Titre du message "
+		        android:textStyle="normal|bold" />
+
+		    <TextView
+		        android:id="@+id/message_row_message_2_lines"
+		        style="@style/MainTableText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@+id/message_row_title_or_source"
+		        android:ellipsize="end"
+		        android:maxLines="2"
+		        android:text="Message sur deux lignes" />
+		</RelativeLayout>
+
+	</RelativeLayout>
+
+
+</RelativeLayout>

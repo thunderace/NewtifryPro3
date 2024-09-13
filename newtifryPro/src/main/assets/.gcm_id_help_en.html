@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>How to Configure &amp; Send FCM Google Cloud Messaging Push Notifications</title>
+    <style type="text/css">
+		#changelog {margin-left: 0;padding-left: 0;}
+		#changelog li {list-style-type: none;font-weight:bold;color:#101010;margin-left: 0;padding-left: 0;}
+		#changelog li ul {margin-bottom:10px;}
+		#changelog li ul li{font-weight:normal;color:#101010;list-style-type: circle;}
+		.warning {color:#FF0000;}
+	</style>
+	</head>
+	
+	<body  style="">
+    <div class="markdown-body">
+		<h2>What do you need</h2>
+			<ul>
+				<li>A SenderId to register your device on Google FCM service.</li>
+				<li>An API Key to send messages to your device</li>
+				<li>The FCM Id of your device (Device ID)</li>
+			</ul>
+		
+		<h2>Get your SenderId/API Key</h2>
+			<p>Parts of this guide were taken from Google's documentation which you can find here: <a href="http://developer.android.com/guide/google/gcm/index.html">http://developer.android.com/guide/google/gcm/index.html</a> </p>
+			<h3>Creating a Google API project</h3>
+				<p>To create a Google API project:</p>
+				<ul>
+					<li>Open the Google APIs Console page.</li>
+					<li>If you haven't created an API project yet, this page will prompt you to do so:</li>
+				</ul>
+				<p><img src="gcm_guide_001.png" alt="Create Project"></p>
+				<blockquote>
+					<p>Note: If you already have existing projects, the first page you see will be the <strong>Dashboard</strong> page. From there you can create a new project by opening the project drop-down menu (upper left corner) and choosing <strong>Other projects &gt; Create</strong>.</p>
+				</blockquote>
+				<ul>
+					<li>Click <strong>Create project</strong>. Your browser URL will change to something like:</li>
+				</ul>
+				<blockquote>
+					<p><strong><code>https://code.google.com/apis/console/#project:4815162342</code></strong></p>
+				</blockquote>
+				<ul>
+					<li>Take note of the value after #project: (***4815162342*** in this example). This is your project ID, and it will be used later on as the FCM sender ID.</li>
+				</ul>
+			<h3>Enabling the FCM Service</h3>
+				<p>To enable the FCM service:</p>
+				<ul>
+					<li>In the main Google APIs Console page, select <strong>Services</strong>.</li>
+					<li>Turn the <strong>Google Cloud Messaging</strong> toggle to ON.</li>
+					<li>In the Terms of Service page, accept the terms.</li>
+				</ul>
+			<h3>Obtaining an API Key</h3>
+				<p>To obtain an API key:</p>
+				<ul>
+					<li>In the main Google APIs Console page, select <strong>API Access</strong>. You will see a screen that resembles the following:</li>
+				</ul>
+				<p><img src="gcm_guide_002.png"></p>
+				<ul>
+					<li>Click <strong>Create new Server key</strong>. The following screen appears:</li>
+				</ul>
+				<p><img src="gcm_guide_003.png" alt="Create New Server Key"></p>
+				<ul>
+					<li>Click Create:  Take note of the <strong>API key</strong> value (***YourKeyWillBeShownHere***) in this example, as it will be used later on.</li>
+				</ul>
+				<p><img src="gcm_guide_004.png" alt="Create"></p>
+				<blockquote>
+					<p><strong>Note:</strong> If you need to rotate the key, click <strong>Generate new key</strong>. A new key will be created while the old one will still be active for up to 24 hours. If you want to get rid of the old key immediately (for example, if you feel it was compromised), click <strong>Delete key</strong>.</p>
+				</blockquote>
+		<h2>Register your device</h2>
+			<p>Once you have your Sender ID, you can register your device. In NewtifryPro:</p>
+			<ul>
+				<li>Open the menu</li>
+				<li>Select 'Register' entry</li>
+				<li>Enter your Sender ID</li>
+				<li>Wait for registration success</li>
+				<li>Open the menu again</li>
+				<li>Select 'Preferences'</li>
+				<li>Select 'Test'</li>
+				<li>After a variable delay, you should receive a test message in NewtifryPro</li>
+			</ul>
+			<p>You are ready to receive notifications!</p>
+		<h2>Send messages to your device</h2>
+			<p>You need the API Key and the device ID</p>
+			<h3>Get your Device ID</h3>
+				<p>In NewtifryPro:</p>
+			<ul>
+				<li>Open the menu</li>
+				<li>Select 'Preferences'</li>
+				<li>Select 'Email Device ID'</li>
+				<li>Enter your email address</li>
+				<li>Send the email</li>
+			</ul>
+			<p>Once you have your device ID, you can use the php script located here : <a href="https://www.dropbox.com/s/6m01no9hyftcnki/newtifryPro-1.1.0.php">NewtifryPro script</a></p>
+
+			<p>You are ready to send notifications!</p>
+	</div>
+	</body>
+</html>

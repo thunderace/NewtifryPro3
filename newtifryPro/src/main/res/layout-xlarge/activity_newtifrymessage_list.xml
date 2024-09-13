@@ -1,0 +1,16 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/newtifrymessage_list"
+    android:name="com.newtifry.pro3.NewtifryMessageListUndoFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewtifryMessageListActivity"
+    tools:layout="@android:layout/list_content" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

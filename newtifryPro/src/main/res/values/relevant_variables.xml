@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- These resources need to be localized (though I wouldn't recommend changing the variable names). -->
+<resources>
+  <!-- It is important for the portion of the array names after the "rv_"
+	   prefix to match the resource id names in the RadioButtons of the
+	   event_edit.xml layout file. -->
+  <string-array name="np_new_message_variables">
+    <item>%npsource\nSource\nMessage source</item>
+    <item>%nptitle\nTitle\nMessage title</item>
+    <item>%npmessage\nContent\nMessage content</item>
+    <item>%nppriority\nPriority\nMessage priority</item>
+    <item>%npurl\nUrl\nMessage url</item>
+    <item>%npimgcount\nImage count\nImage count</item>
+    <item>%npimg1\nImage 1 url\nImage url 1</item>
+    <item>%npimg2\nImage 2 url\nImage url 2</item>
+    <item>%npimg3\nImage 3 url\nImage url 3</item>
+    <item>%npimg4\nImage 4 url\nImage url 4</item>
+    <item>%npimg5\nImage 5 url\nImage url 5</item>
+    </string-array>
+</resources>
+

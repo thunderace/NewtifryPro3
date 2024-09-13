@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+	<CheckBoxPreference 
+		android:persistent="true"
+	    android:title="@string/quiet_hours" 
+	    android:key="quietHoursEnable" 
+	    android:summary="@string/quiet_hours_summary" 
+	    android:disableDependentsState="true"
+	    android:defaultValue="false"/>
+      <com.newtifry.pro3.preferences.TimePreference
+           android:key="quietHoursStart"
+           android:defaultValue="22:00"
+		   android:summary="" 
+           android:title="@string/quiet_hours_start_title"/>
+       <com.newtifry.pro3.preferences.TimePreference
+           android:key="quietHoursEnd"
+           android:defaultValue="06:00"
+		   android:summary="" 
+           android:title="@string/quiet_hours_end_title"/>		
+	<com.afollestad.materialdialogs.prefs.MaterialMultiSelectListPreference
+		android:persistent="true"
+	    android:entries="@array/quietHoursApplyToEntries" 
+	    android:title="@string/quiet_priorities_apply" 
+	    android:key="quitHoursPrioritiesApplication" 
+	    android:entryValues="@array/quietHoursApplyToValues" 
+	    android:defaultValue="@array/quietHoursDefaultValues" 
+	    android:summary="@string/quiet_priorities_apply_summary" 
+	    />
+        
+</PreferenceScreen>
+
+

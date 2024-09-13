@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+	<title>Versions</title>
+	<style type="text/css">
+		#changelog {margin-left: 0;padding-left: 0;}
+		#changelog li {list-style-type: none;font-weight:bold;color:#101010;margin-left: 0;padding-left: 0;}
+		#changelog li ul {margin-bottom:10px;}
+		#changelog li ul li{font-weight:normal;color:#101010;list-style-type: circle;}
+		.warning {color:#FF0000;}
+	</style>
+</head>
+<body style="text-align:justify">
+	<ul id="changelog">
+		<li>v2.3.0
+			<ul>
+				<li>Correction d'une faille potentielle de confidentialité</li>
+			</ul>
+		</li>
+		<li>v2.2.2
+			<ul>
+				<li>Rétablissement de la synthèse vocale</li>
+			</ul>
+		</li>
+		<li>v2.2.1
+			<ul>
+				<li>support de l'API 30</li>
+				<li>Correction d'un bug dans les notifications</li>
+			</ul>
+		</li>
+		<li>v2.1.1
+			<ul>
+				<li>Finalisation de la mise à niveau vers FCM</li>
+				<li>Correction des liens des images et url dans le message de test</li>
+				<li>API 28 (Pie)</li>
+				<li>Arrêt du support de l'utilisation de Notifier Pro</li>
+				<li>Ajout de  Crashlytic</li>
+				<li>Migration vers AndroidX</li>
+				<li>Correction du numéro de notification dans le badge</li>
+			</ul>
+		</li>
+		<li>v2.1.0
+			<ul>
+				<li>Suppression du support de réception des messages par SMS pour se conformer aux nouvelle règles de Google</li>
+				<li>Compatibilité avec FCM : continuera à fonctionner après avril 2019</li>
+				<li>Mise à jour vers l'API26 (Oreo)</li>
+			</ul>
+		</li>
+		<li>v2.0.9
+			<ul>
+				<li>Nouvelle fonction de regroupement de messages: tous les messages avec même source/titre/url/images/message sont regroupés dans un unique message avec compteur intégré. Peut être désactivé dans les options avancées.</li>
+			</ul>
+		</li>
+		<li>v2.0.8
+			<ul>
+				<li>Correction des notifications sous API26 (Oreo)</li>
+				<li>Correction de bugs mineurs</li>
+				<li>Mise à jour des services google play en version 11.0.4</li>
+			</ul>
+		</li>
+
+		<li>v2.0.7
+			<ul>
+				<li>Nouvelle option avancée pour spécifier le format de l'heure des messages (SYSTEM, 24H, 12/H AM/PM)</li>
+				<li>Messages de debug améliorés dans la liste des messages</li>
+				<li>Mise à jour des services google play en version 11.0.2</li>
+				<li>Mise à jour vers l'API25</li>
+			</ul>
+		</li>
+		<li>v2.0.6
+			<ul>
+				<li>Correction (encore) d'un plantage dans la gestion des notifications Wear</li>
+			</ul>
+		</li>
+		<li>v2.0.5
+			<ul>
+				<li>Correction d'un bug dans la sélection du niveau de visibilité des notifications</li>
+			</ul>
+		</li>
+		<li>v2.0.4
+			<ul>
+				<li>Support des badges pour de multiples launchers (Sony, Samsung, LG, HTC, Asus, ADW, APEX, Nova, Huawei (partial), ZUK, OPPO, EveryThingMe, ZTE)</li>
+				<li>Correction d'un plantage dans la gestion des notifications Wear</li>
+			</ul>
+		</li>
+		<li>v2.0.3
+	        <ul>
+				<li>Nouvelle option de visibilité des notifications sur l'écran de verrouillage (privé, public, secret)</li>
+				<li>Nouvelle option de debug (paramètres/paramètres avancés/Mode debug) : affiche les informations de debug dans la liste de messages</li>
+				<li>Nouvelle option pour passer les notifications en MAX_PRIORITY</li>
+				<li>Correction de bug dans le choix des sons par priorité</li>
+				<li>Correction de non prise en compte du son utilisateur dans les notifications</li>
+				<li>Mise à jour pour l'API24</li>
+	        </ul>
+	    </li>    
+	    <li>v2.0.2
+	        <ul>
+				<li>Support des badges non lus de nova launcher (installez teslaunread)</li>
+				<li>La présence d'un compte google n'est plus requise pour les version d'android >= 3.0</li>
+	        </ul>
+	    </li>    
+	    <li>v2.0.1
+	        <ul>
+				<li>Suppression de la détection du mode Ne pas déranger</li>
+	        </ul>
+	    </li>    
+	    <li>v2.0.0
+	        <ul>
+				<li>Détection du mode Ne pas déranger pour Android 6 et plus</li>
+				<li>Modification de la prise en compte de mode ne pas déranger pour android Lollipop</li>
+				<li>Option pour utiliser des icônes noires dans les notifications</li>
+				<li>Mise à jour pour l'API23</li>
+				<li>Nouvelles icônes</li>
+				<li>Sons des notifications personalisables par priorité de message</li>
+				<li>Boite de dialogue 'Material Design'</li>
+				<li>Utilisation du topic GCM : le deviceId n'est plus necéssaire sauf si on veut envoyer des messages ciblé vers un device particulier.</li>
+				<li>Paramètre speak du message prépondérants sur les settings locaux</li>
+				<li>Paramètre notify du message prépondérants sur les settings locaux</li>
+				<li>Compatibilité accrue pour les tablettes en API < 13</li>
+				<li>Nouvelles couleurs</li>
+				<li>Support avancé des notifications Wear</li>
+				<li>Nouvelle bar d'annulation de suppression de message</li>
+				<li>Support de la reception des messages en plusieurs parties (pour les très gros messages : utiliser les scripts dédiés disponibles sur <a href="https://github.com/thunderace/NewtifryPro">Github</a>)</li>
+				<li>Correction de la reception des messages par SMS en plusierus parties</li>
+	        </ul>
+	    </li>    
+	    <li>v1.4.0
+	        <ul>
+	            <li>Intégration de la nouvelle API GCM (Google Play Services)</li>
+	            <li>Arrêt du support de l'API8 (RIP Froyo)</li>
+	            <li>Compatibilité étendue avec les tablettes avec API inférieure à 13</li>
+	            <li>Plantage possible corrigé en mode tablette</li>
+	        </ul>
+	    </li>    
+	    <li>v1.3.4
+	        <ul>
+	            <li>Compatibilité étendue aux appareils sans téléphonie</li>
+	        </ul>
+	    </li>    
+	    <li>v1.3.3
+	        <ul>
+	            <li>Prise en compte des messages avec priorité négative(demande de progy)</li>
+	            <li>Ces messages ne sont pas affiché, ne génèrent pas de notification, ne sont pas lus à haute voix par défaut</li>
+	            <li>Seuls les 10 derniers messages avec priorité négative sont conservés en base de données</li>
+	            <li>Le message de test fonctionne</li>
+	            <li>La purge par date fonctionne</li>
+	            <li>Les purges automatiques sont lancées une fois par jour</li>
+	            <li>Possibilité de créer un message dans NewtifryPro depuis l'extérieur(demande de Hrant)</li>
+	            <li>Les détails de ces évolutions sont/seront disponibles <a href="https://github.com/thunderace/NewtifryPro-php/wiki">ici</a></li>
+	        </ul>
+	    </li>    
+	    <li>v1.3.2
+	        <ul>
+	            <li>Tasker : Vous devrez supprimer et recréer les Profils existants pour qu'ils fonctionnent correctement</li>
+	            <li>Plugin Tasker : Les variables %nppriority et %npimgcount sont maintenant utilisables</li>
+	            <li>Notifications : Action 'Marquer tous lus' pour de multiples nouveaux messages</li>
+	            <li>Fonction de copie de texte dans l'écran de détail du message (appui long pour sur le texte à copier)</li>
+	        </ul>
+	    </li>    
+	    <li>v1.3.1
+	        <ul>
+	            <li>Version bugguée retirée</li>
+	        </ul>
+	    </li>    
+	    <li>v1.3.0
+	        <ul>
+	            <li>Plugin Tasker : </li>
+	            <ul>
+		            <li>Evénement 'Nouveau message'</li>
+		            <li>Action 'Afficher le dernier message'</li>
+		            <li>Action 'Tout marquer lu'</li>
+		            <li>Action 'Marquer dernier lu'</li>
+		            <li>Action 'Désactiver lecture vocale'</li>
+		            <li>Action 'Activer lecture vocale'</li>
+		            <li>Action 'Désactiver notifications'</li>
+		            <li>Action 'Activer notifications'</li>
+		            <li>D'autres à venir (en fonction des demandes)</li>
+	            </ul>
+	            <li>Correction de la vérification de licence (Android 5.x)</li>
+	            <li>Chargement des images à réception de message corrigé</li>
+	            <li>Mise à jour API 22</li>
+	            <li>Option pour vibrer jouer un son à chaque nouveau message</li>
+	            <li>Les options de sonnerie/vibration ne sont plus désactivée lorsqu'il est choisi de lire les messages à haute voix</li>
+	            <li>Correction de bugs mineurs divers</li>
+	            <li>Correction de la prise en compte du paramètre 'speak'(encore et encore)</li>
+	            <li>Correction de l'activation du menu 'Afficher l'image'</li>
+	            <li>Support du formatage HTML dans le message</li>
+	            <li>Le corps du message est affiché dans une scrollview lorsque le message ne contient pas d'images (permet de voir intégralement un message très long (HTML par exemple))</li>
+	            <li>Support de la réception par SMS. Pratique quand la connexion data est absente et que l'on dispose de l'envoi gratuit de SMS</li> 
+	            <li>Le formatage des notifications est également appliqué aux messages uniques</li> 
+	            <li>Format de la notification pour un seul message modifié (affichage source - titre)</li>
+	            <li>Permission GET_TASKS ajoutée pour éviter les crashs lors de la sélection de la sonnerie sur certains téléphones</li> 
+	        </ul>
+       	</li>	    	    
+       	<li>v1.2.3
+	        <ul>
+	            <li>Option pour choisir d'utiliser l'ancien système de lecture</li>
+	            <li>Nouveau service de lecture qui suspend la musique avant de lire le message</li>
+	            <li>Support de l'extension Smartwatch 2. <a href="market://details?id=com.smart.newtifry.pro">ici</a></li>
+	            <li>Un appui sur le message de notification affiche le message reçu dans le cas d'un message unique</li>
+	            <li>Option pour inclure les messages verrouillés et punaisés lors de l'action 'Effacer les messages vus'</li>
+	       </ul>
+       </li>	    
+	    <li>v1.2.2
+	        <ul>
+	            <li>Nouvelle option pour autoriser la suppression des messages punaisés ou verrouillés</li>
+	            <li>Les messages punaisés ou verrouillés sont également affectés par l'option 'Tout marquer comme lu' (œil) </li>
+	            <li>Lien vers le script PHP modifié</li>
+	            <li>Lien vers le script NodeJs ajouté</li>
+	       </ul>
+       </li>	    
+	    <li>v1.2.1
+	        <ul>
+	            <li>Nouveau format des notifications (comme Gmail) avec undo</li>
+	            <li>La couleur des titres est correctement appliquée au premier démarrage</li>
+	            <li>Seul le nombre de nouveaux messages est affiché dans les notifications</li>
+	            <li>Option de formatage des notifications (uniquement pour les notifications multiples)</li>
+	            <li>Mise à jour des urls du message de test</li>
+	        </ul>
+       </li>	    
+	    <li>v1.2.0
+	        <ul>
+	        	<li>Option pour empêcher la mise en sommeil du processeur</li>
+	        	<li>Support du nouveau système de notification (notification multi lignes agrandissable)</li>
+	        	<li>Option de sélection du canal de notification</li>
+	        	<li>Option pour télécharger les images uniquement en Wifi</li>
+	        	<li>Les images sont pré chargées à la réception du message uniquement si l'option d'affichage des images est activée</li>
+	 			<li>Option pour régler la lecture à haute voix des messages en fonction de leur priorité(Demande de Hrant)</li>       
+	 			<li>Option pour ne pas lire les messages de plus de X caractères (demande de Hrant)</li>       
+	            <li>La période de tranquillité est désactivée par défaut (deuxième bug fix)</li>
+				<li>Les paramètres 'speak' et 'notify' sont maintenant bien pris en compte (merci Hrant)</li>
+				<li>Bug aléatoire corrigé lors de l'envoi d'un message de test</li>
+	            <li>Les messages peuvent être dépunaisés/déverrouillés en appuyant sur l'icône de punaise/verrou dans l'écran de visualisation du message</li>
+	            <li>Les messages peuvent être punaisés/dépunaisés - verrouillés/déverrouillés à partir du menu de l'écran de visualisation du message</li>
+	            <li>Jusqu'à 5 images peuvent être attachées à un message et affichées par glissé latéral dans l'écran de visualisation du message</li>
+	            <li>Option pour empêcher la suppression des messages non lus (Désactivée par défaut)</li>
+	       </ul>
+       </li>	    
+	    <li>v1.1.0
+        <ul>
+            <li>Le titre des messages non lus est affiché en gras/italique/souligné</li>
+            <li>Nouvelle possibilité d'annuler la suppression du dernier message</li>
+            <li>La notification disparait lorsque NewtifryPro est ouvert.</li>
+            <li>Modification de la prise en compte du paramètre API 'forceSpeak' : le paramètre est renommé 'speak'. Si fixé à 1, le message est lu par la synthèse vocale même si la synthèse est désactivée mais la période de silence définie est respectée. Si fixé à 0 le message n'est jamais lu par la synthèse vocale même si celle ci est définie dans les paramètres.</li>
+            <li>Nouveau paramètre API 'notify' : permet de surpasser le paramètre de notification de l'application</li>
+            <li>Nouveau paramètre API 'state' : Pour envoyer des messages punaisés ou verrouillés.</li>
+            <li>Deux nouveaux états de message : Punaisé et verrouillé. Les messages punaisés sont affichés en haut de la liste et ne sont pas affectés par les actions globales sur la liste (tout marquer lu, tout effacer). Cet état est visualisé par une icône Punaises.
+            Les messages verrouillés sont affichés en haut de la liste et ne peuvent être supprimé tant que le verrou est présent. Cet état est visualisé par une icône cadenas.</li>
+            <li>Baisse de la sensibilité du 'Swipe To Dismiss' (évite les suppressions par erreur)</li>
+            <li>Réduction/Suppression de l'effet 'flicker' lors de la suppression d'un message avec le 'Swipe To Dismiss'</li>
+            <li>Prise en compte de la réception d'un message sans date (la date de réception est appliquée)</li>
+            <li>Correction d'un bug dans la gestion des préférences de son de notification</li>
+            <li>La période de tranquillité est désactivée par défaut</li>
+        </ul>
+       </li>	    
+	    <li>v1.0.1
+        <ul>
+            <li>Correction de la gestion de l'entrée de menu 'Afficher l'image'</li>
+            <li>Prise en compte du paramètre 'nocache'</li>
+        </ul>
+       </li>	    
+       <li>v1.0.0
+        <ul>
+            <li>Première version publiée</li>
+        </ul>
+       </li>
+	</ul>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_visibility_black_24dp"
+        android:shortcutDisabledMessage="@string/shortcut_disabled_notification"
+        android:shortcutId="disable_notitication"
+        android:shortcutLongLabel="@string/shortcut_disabled_notification_long_message"
+        android:shortcutShortLabel="@string/shortcut_disabled_notification_short_message">
+        <!-- Each one of these intents needs an android:action, even if you don't
+            do anything with it. Otherwise you're in for a crash! -->
+        <intent
+            android:action="com.newtifry.pro3.NotificationSeenAll"
+            android:targetClass="com.newtifry.pro3.utils.ShortcutsActivity"
+            android:targetPackage="com.newtifry.pro3"/>
+    </shortcut>
+
+</shortcuts>

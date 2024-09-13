@@ -1,0 +1,56 @@
+<resources>
+    <!-- Undo bar styles -->
+    <style name="AbstractUndoTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#aaaaaa</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="UndoTextStyle" parent="AbstractUndoTextStyle">
+        <item name="android:paddingRight">@dimen/undo_text_padding</item>
+    </style>
+    <style name="UndoNotificationStyle">
+        <item name="android:layout_marginLeft">@android:dimen/notification_large_icon_width</item>
+    </style>
+    
+    <!-- End undo bar styles -->
+    
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+    -->
+    
+    <!-- Application theme. -->
+
+    <!-- About theme. -->
+    <style name="MainTableText" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/blackText</item>
+    </style>
+	<style name="elv_fade_animation">
+		<item name="android:windowEnterAnimation">@anim/elv_popup_show</item>
+		<item name="android:windowExitAnimation">@anim/elv_popup_hide</item>
+	</style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/md_deep_orange_500</item>
+        <item name="colorPrimaryDark">@color/md_deep_orange_900</item>
+        <item name="colorAccent">@color/md_deep_orange_A200</item>
+    </style>
+    <style name="UndoNotificationDescriptionStyle">
+        <item name="android:paddingLeft">@dimen/undo_description_padding</item>
+        <item name="android:text">@string/elv_item_deleted</item>
+        <item name="android:textColor">@color/text_color_undo_notification_description</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="UndoNotificationTextStyle">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:focusable">true</item>
+        <item name="android:paddingLeft">@dimen/undo_text_padding</item>
+        <item name="android:paddingRight">@dimen/undo_text_padding</item>
+        <item name="android:text">@string/elv_undo</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/text_color_undo_notification</item>
+    </style>
+</resources>

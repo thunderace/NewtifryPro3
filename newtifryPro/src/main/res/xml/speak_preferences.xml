@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<Preference 
+		android:title="@string/preview" 
+	  	android:summary="@string/preview_summary" 
+	  	android:key="previewSpeech"/>
+
+	 	<PreferenceCategory android:title="@string/priority_speak_title" >
+			<CheckBoxPreference 
+				android:persistent="true"
+			    android:title="@string/alert" 
+			    android:defaultValue="true" 
+			    android:key="alertPrioritySpeak"/>
+			<CheckBoxPreference 
+				android:persistent="true"
+			    android:title="@string/warning" 
+			    android:defaultValue="true" 
+			    android:key="warningPrioritySpeak"/>
+			<CheckBoxPreference 
+				android:persistent="true"
+			    android:title="@string/info" 
+			    android:defaultValue="true" 
+			    android:key="infoPrioritySpeak"/>
+			<CheckBoxPreference 
+				android:persistent="true"
+			    android:title="@string/none" 
+			    android:defaultValue="true" 
+			    android:key="nonePrioritySpeak"/>
+		</PreferenceCategory>
+	 	<PreferenceCategory android:title="@string/other_speak_settings_title" >
+ 	    	<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+				android:persistent="true"
+		    	android:key="delayReadingTime" 
+		    	android:summary="@string/delay_readout_summary" 
+		    	android:title="@string/delay_readout"
+				android:inputType="number"
+		    	android:defaultValue="0"
+		    	android:digits="0123456789" 
+		    	android:maxLength="2">
+			</com.afollestad.materialdialogs.prefs.MaterialEditTextPreference>
+			<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+				android:persistent="true"
+				android:key="maxReadingLength"
+				android:inputType="number"
+				android:summary="@string/max_length_summary"
+				android:title="@string/max_length"
+				android:defaultValue="0"
+				android:digits="0123456789"
+				android:maxLength="3">
+			</com.afollestad.materialdialogs.prefs.MaterialEditTextPreference>
+			<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+				android:persistent="true"
+				android:key="readingLengthNoSpeak"
+				android:inputType="number"
+				android:summary="@string/limit_length_to_speak_summary"
+				android:title="@string/limit_length_to_speak"
+				android:defaultValue="0"
+				android:digits="0123456789"
+				android:maxLength="3">
+			</com.afollestad.materialdialogs.prefs.MaterialEditTextPreference>
+			<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+				android:persistent="true"
+				android:key="speakFormat"
+				android:summary="@string/speakformat_summary"
+				android:title="@string/speakformat"
+				android:defaultValue="%t. %m">
+			</com.afollestad.materialdialogs.prefs.MaterialEditTextPreference>
+			<com.afollestad.materialdialogs.prefs.MaterialListPreference
+				android:persistent="true"
+				android:entries="@array/ttsAudioStreamEntries"
+				android:title="@string/tts_audio_stream_title"
+				android:key="ttsAudioStream"
+				android:entryValues="@array/ttsAudioStreamvalues"
+				android:summary="@string/tts_audio_stream_summary"
+				android:defaultValue="NOTIFICATION" />
+	</PreferenceCategory>
+	    <PreferenceCategory android:title="@string/shakestop" >
+			<CheckBoxPreference 
+				android:persistent="true"
+			    android:title="@string/shakestop_activate" 
+			    android:defaultValue="false" 
+			    android:key="shakeToStop"/>
+				
+			<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+				android:persistent="true"
+			    android:key="shakeThreshold" 
+			    android:summary="@string/shakethreshhold_summary" 
+			    android:title="@string/shakethreshhold"
+				android:inputType="number"
+			    android:digits="0123456789"
+			    android:defaultValue="1500" 
+			    android:maxLength="4"
+			    android:dependency="shakeToStop">
+			</com.afollestad.materialdialogs.prefs.MaterialEditTextPreference>
+			
+			<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+				android:persistent="true"
+			    android:key="shakeWaitTime" 
+			    android:summary="@string/shakewaittime_summary" 
+			    android:title="@string/shakewaittime"
+				android:inputType="number"
+			    android:digits="0123456789" 
+			    android:defaultValue="60" 
+			    android:maxLength="2"
+			    android:dependency="shakeToStop">
+			</com.afollestad.materialdialogs.prefs.MaterialEditTextPreference>
+		</PreferenceCategory>	
+	 		    		
+</PreferenceScreen>

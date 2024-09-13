@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>How to Configure &amp; Send FCM Google Cloud Messaging Push Notifications</title>
+    <style type="text/css">
+		#changelog {margin-left: 0;padding-left: 0;}
+		#changelog li {list-style-type: none;font-weight:bold;color:#101010;margin-left: 0;padding-left: 0;}
+		#changelog li ul {margin-bottom:10px;}
+		#changelog li ul li{font-weight:normal;color:#101010;list-style-type: circle;}
+		.warning {color:#FF0000;}
+	</style>
+	</head>
+	
+	<body  style="">
+    <div class="markdown-body">
+		<h2>Ce qu'il faut</h2>
+			<ul>
+				<li>Un <b>SenderId</b> pour s'enregistrer auprès du service FCM de Google.</li>
+				<li>Une <b>APIKey</b> pour envoyer des messages à votre périphérique</li>
+				<li>L'<b>ID FCM(DeviceID)</b> de votre périphérique</li>
+			</ul>
+		
+		<h2>Obtenir le SenderId et l'APIKey</h2>
+			<p>Une partie de ce guide est issue de la documentation Google présente <a href="http://developer.android.com/guide/google/gcm/index.html">ici</a> </p>
+			<h3>Création d''un projet Google API</h3>
+				<p>Pour créer un projet Google API:</p>
+				<ul>
+					<li>Ouvrez la console Google APIs.</li>
+					<li>Si vous n'avez pas encore créé de projet, cette page va vous demander de le faire:</li>
+				</ul>
+				<p><img src="fcm_guide_001.png" alt="Create Project"></p>
+				<blockquote>
+					<p>Note: Si vous avez déjà un projet existant, la première page que vous verrez sera le <strong>Dashboard</strong>. De cette page vous pouvez créer un nouveau projet en ouvrant le menu projet (en haut à gauche) et en choisissant <strong>Other projects &gt; Create</strong>.</p>
+				</blockquote>
+				<ul>
+					<li>Cliquez sur <strong>Create project</strong>. L'URL de votre browser va prendre la forme suivante:</li>
+				</ul>
+				<blockquote>
+					<p><strong><code>https://code.google.com/apis/console/#project:4816662342</code></strong></p>
+				</blockquote>
+				<ul>
+					<li>Notez la valeur située après #project: (***4816662342*** dans cet exemple). Cette valeur est votre ID de projet et sera utilisée en tant que <b>SenderId</b>.</li>
+				</ul>
+			<h3>Activer le service FCM</h3>
+				<p>Pour activer le service FCM:</p>
+				<ul>
+					<li>Dans le menu de gauche, cliquez sur <strong>Services</strong>.</li>
+					<li>Activez le <strong>Google Cloud Messaging for Android</strong>.</li>
+					<li>Acceptez les conditions d'utilisation</li>
+				</ul>
+				<p><img src="gcm_guide_005.png"></p>
+			<h3>Obtenir l '<b>APIKey</b></h3>
+				<p>Pour obtenir l'<b>APIKey</b>:</p>
+				<ul>
+					<li>Dans le menu de gauche, cliquez sur <strong>API Access</strong>. Vous verrez apparaitre un écran semblable à celui-ci:</li>
+				</ul>
+				<p><img src="gcm_guide_002.png"></p>
+				<ul>
+					<li>Cliquez sur <strong>Create new Server key</strong>. L'écran suivant apparait:</li>
+				</ul>
+				<p><img src="gcm_guide_003.png" alt="Create New Server Key"></p>
+				<ul>
+					<li>Cliquez sur Create:  Notez la valeur de <strong>API key</strong>  (***YourKeyWillBeShownHere*** dans cet exemple).</li>
+				</ul>
+				<p><img src="gcm_guide_004.png" alt="Create"></p>
+		<h2>Enregistrer votre périphérique</h2>
+			<p>Pour enregistrer votre périphérique, dans NewtifryPro:</p>
+			<ul>
+				<li>Ouvrez le menu</li>
+				<li>Selectionnez 'Enregistrement'</li>
+				<li>Entrez le <b>SenderID</b> obtenu précédemment</li>
+				<li>Attendez la fin de l'enregistrement</li>
+				<li>Ouvrez le menu</li>
+				<li>Selectionnez 'Paramètres'</li>
+				<li>Selectionnez 'Test'</li>
+				<li>Après une durée variable, vous recevrez un message de test</li>
+			</ul>
+			<p>Vous êtes maintenant prêt à recevoir des messages!</p>
+		<h2>Envoyer des messages à un périphérique</h2>
+			<p>Vous avez besoin de votre <b>APIKey</b> et du <b>DeviceID</b> de votre périphérique</p>
+			<h3>Obtenir le <b>DeviceID</b> du périphérique</h3>
+				<p>Dans NewtifryPro:</p>
+			<ul>
+				<li>Ouvrez le menu</li>
+				<li>Selectionnez 'Paramètres'</li>
+				<li>Selectionnez  'Identifiant de l'appareil'</li>
+				<li>Entrez votre adresse mail et effectuez l'envoi</li>
+			</ul>
+			<p>Une fois l'ID de l'appareil obtenu, vous pouvez utiliser le script php disponible ici : <a href="https://www.dropbox.com/s/6m01no9hyftcnki/newtifryPro-1.1.0.php">NewtifryPro script</a></p>
+
+			<p>Vous pouvez envoyer des messages à votre périphérique!</p>
+	</div>
+	</body>
+</html>

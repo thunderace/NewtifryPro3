@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <RingtonePreference
+        android:persistent="true"
+        android:title="@string/choose_notification_tone"
+        android:key="choosenNotificationGlobal"
+        android:summary="@string/choose_notification_tone_summary"
+        android:defaultValue="content://settings/system/notification_sound"
+        android:ringtoneType="notification" />
+
+    <CheckBoxPreference
+        android:persistent="true"
+        android:title="@string/sound_by_priority"
+        android:key="soundByPriority"
+        android:defaultValue="false"/>
+
+    <RingtonePreference
+        android:persistent="true"
+        android:title="@string/choose_notification_tone_alert"
+        android:key="choosenNotificationAlert"
+        android:summary="@string/choose_notification_tone_summary"
+        android:defaultValue="content://settings/system/notification_sound"
+        android:dependency="soundByPriority"
+        android:ringtoneType="notification" />
+
+    <RingtonePreference
+        android:persistent="true"
+        android:title="@string/choose_notification_tone_warning"
+        android:key="choosenNotificationWarning"
+        android:summary="@string/choose_notification_tone_summary"
+        android:defaultValue="content://settings/system/notification_sound"
+        android:dependency="soundByPriority"
+        android:ringtoneType="notification" />
+
+    <RingtonePreference
+        android:persistent="true"
+        android:title="@string/choose_notification_tone_normal"
+        android:key="choosenNotificationNormal"
+        android:summary="@string/choose_notification_tone_summary"
+        android:defaultValue="content://settings/system/notification_sound"
+        android:dependency="soundByPriority"
+        android:ringtoneType="notification" />
+
+    <RingtonePreference
+        android:persistent="true"
+        android:title="@string/choose_notification_tone_none"
+        android:key="choosenNotificationNone"
+        android:summary="@string/choose_notification_tone_summary"
+        android:defaultValue="content://settings/system/notification_sound"
+        android:dependency="soundByPriority"
+        android:ringtoneType="notification" />
+</PreferenceScreen>

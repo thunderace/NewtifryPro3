@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+	<Preference
+		android:key="quietSettings" 
+        android:title="@string/notification_quiet_hours_settings">
+        <intent
+        	android:action="android.intent.action.VIEW"
+            android:targetClass="com.newtifry.pro3.preferences.QuietPreferenceActivity"
+            android:targetPackage="com.newtifry.pro3" />
+    </Preference>
+
+	<Preference
+		android:key="soundNotificationSettings"
+		android:title="@string/choose_notification_tone">
+		<intent
+			android:action="android.intent.action.VIEW"
+			android:targetClass="com.newtifry.pro3.preferences.SoundPreferenceActivity"
+			android:targetPackage="com.newtifry.pro3" />
+	</Preference>
+
+	<Preference
+		android:key="visibilityNotificationSettings"
+		android:title="@string/choose_notification_visibility">
+		<intent
+			android:action="android.intent.action.VIEW"
+			android:targetClass="com.newtifry.pro3.preferences.NotificationVisibilityPreferenceActivity"
+			android:targetPackage="com.newtifry.pro3" />
+	</Preference>
+
+	<CheckBoxPreference
+		android:persistent="true"
+		android:title="@string/use_black_action_icons"
+		android:key="useBlackActionIcons"
+		android:summary="@string/use_black_action_icons_summary"
+		android:disableDependentsState="true"
+		android:defaultValue="false"/>
+
+	<CheckBoxPreference
+		android:persistent="true"
+	    android:title="@string/vibrate" 
+	    android:key="vibrateNotify" 
+	    android:summary="@string/vibrate_summary" 
+	    android:defaultValue="true"/>
+	
+	<CheckBoxPreference 
+		android:persistent="true"
+	    android:title="@string/notify_everytime" 
+	    android:key="notifyEveryTime" 
+	    android:summary="@string/notify_everytime_summary" 
+	    android:defaultValue="false"/>
+		
+	<CheckBoxPreference 
+		android:persistent="true"
+	    android:title="@string/led_flash" 
+	    android:key="ledFlash" 
+	    android:summary="@string/led_flash_summary" 
+	    android:defaultValue="true"/>
+
+	<CheckBoxPreference
+		android:persistent="true"
+		android:title="@string/max_priority"
+		android:key="maxPriority"
+		android:summary="@string/max_priority_summary"
+		android:defaultValue="true"/>
+
+
+	<CheckBoxPreference 
+		android:persistent="true"
+	    android:title="@string/speak_message" 
+	    android:key="speakMessage" 
+	    android:summary="@string/speak_message_summary" 
+	    android:defaultValue="true"/>
+	
+	<Preference
+		android:key="speakSettings" 
+        android:title="@string/speak_settings_title"
+        android:dependency="speakMessage" >
+        <intent
+        	android:action="android.intent.action.VIEW"
+            android:targetClass="com.newtifry.pro3.preferences.SpeakPreferenceActivity"
+            android:targetPackage="com.newtifry.pro3" />
+    </Preference>
+	
+ 
+</PreferenceScreen>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/advanced_messages_preferences" >
+		<CheckBoxPreference
+			android:persistent="true"
+			android:title="@string/group_messages"
+			android:defaultValue="true"
+			android:summary="@string/group_messages_summary"
+			android:key="groupMessages"/>
+		<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+			android:persistent="true"
+		    android:title="@string/auto_clean_old_messages" 
+		    android:defaultValue="0"
+			android:inputType="number"
+		    android:summary="@string/auto_clean_old_messages_summary"
+		    android:key="autoCleanOldMessage"
+		    android:digits="0123456789" 
+		    android:maxLength="2"/>
+		<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+			android:persistent="true"
+		    android:title="@string/message_count_limit" 
+		    android:defaultValue="0" 
+		    android:summary="@string/message_count_limit_summary" 
+		    android:key="maxMessageCount"
+			android:inputType="number"
+		    android:digits="0123456789"
+		    android:maxLength="4">
+		</com.afollestad.materialdialogs.prefs.MaterialEditTextPreference>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/confirm_delete_all" 
+		    android:defaultValue="true" 
+		    android:summary="@string/confirm_delete_all_summary" 
+		    android:key="confirmDeleteAll"/>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/do_not_delete_unseen" 
+		    android:defaultValue="false" 
+		    android:summary="@string/do_not_delete_unseen_summary" 
+		    android:key="doNotDeleteUnseen"/>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/do_not_delete_pinned_and_locked" 
+		    android:defaultValue="false" 
+		    android:summary="@string/do_not_delete_pinned_and_locked_summary" 
+		    android:key="deletePinnedAndLocked"/>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/delete_all_seen_sticky_and_locked_too" 
+		    android:summary="@string/delete_all_seen_sticky_and_locked_too_summary" 
+		    android:defaultValue="false" 
+		    android:key="deleteAllSeenPinnedAndLocked"/>
+		<CheckBoxPreference 
+			android:persistent="true"
+		    android:title="@string/enable_undo" 
+		    android:defaultValue="true" 
+		    android:summary="@string/enable_undo_summary" 
+		    android:key="enableUndo"/>
+		<CheckBoxPreference
+			android:persistent="true"
+			android:title="@string/debug_mode"
+			android:defaultValue="false"
+			android:summary="@string/debug_mode_summary"
+			android:key="embededDebug"/>
+		<CheckBoxPreference
+			android:persistent="true"
+			android:title="@string/log_level_verbose"
+			android:defaultValue="false"
+			android:dependency="embededDebug"
+			android:summary="@string/log_level_verbose_summary"
+			android:key="verboseLogLevel"/>
+		</PreferenceCategory>
+    	<PreferenceCategory android:title="@string/advanced_notification_sound_preferences" >
+    		<com.afollestad.materialdialogs.prefs.MaterialListPreference
+				android:persistent="true"
+			    android:entries="@array/ttsAudioStreamEntries" 
+			    android:title="@string/notification_audio_stream_title" 
+			    android:key="notificationAudioStream" 
+			    android:entryValues="@array/ttsAudioStreamvalues" 
+			    android:summary="@string/notification_audio_stream_summary" 
+			    android:defaultValue="NOTIFICATION" />
+    	</PreferenceCategory>
+    	<PreferenceCategory android:title="@string/advanced_notification_format_preferences" >
+    		<com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+				android:persistent="true"
+		    	android:key="notificationFormat" 
+		    	android:summary="@string/notificationformat_summary" 
+		    	android:title="@string/notificationformat" 
+		    	android:defaultValue="%d : %s - %t : %m">
+			</com.afollestad.materialdialogs.prefs.MaterialEditTextPreference>
+    	</PreferenceCategory>
+    	<PreferenceCategory android:title="@string/advanced_misc_preferences" >
+			<CheckBoxPreference 
+				android:persistent="true"
+			    android:title="@string/prevent_cpu_sleep_title" 
+			    android:defaultValue="false" 
+			    android:summary="@string/prevent_cpu_sleep_summary" 
+			    android:key="preventCpuSleep"/>
+			<com.afollestad.materialdialogs.prefs.MaterialListPreference
+				android:persistent="true"
+				android:entries="@array/date_format_entries"
+				android:entryValues="@array/date_format_values"
+				android:title="@string/date_time_format_title"
+				android:key="dateTimeFormatSettings"
+				android:defaultValue="SYSTEM" />
+    	</PreferenceCategory>
+</PreferenceScreen>

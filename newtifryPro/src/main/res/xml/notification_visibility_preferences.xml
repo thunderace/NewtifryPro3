@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        android:persistent="true"
+        android:entries="@array/notification_visibility_entries"
+        android:title="@string/choose_notification_visibility"
+        android:key="globalNotificationVisibility"
+        android:summary="@string/choose_notification_visibility_summary"
+        android:entryValues="@array/notification_visibility_values"
+        android:defaultValue="0" />
+
+    <CheckBoxPreference
+        android:persistent="true"
+        android:title="@string/notification_visibility_by_priority"
+        android:key="notificationVisibilityByPriority"
+        android:defaultValue="false"/>
+
+    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        android:persistent="true"
+        android:entries="@array/notification_visibility_entries"
+        android:entryValues="@array/notification_visibility_values"
+        android:title="@string/choose_notification_visibility_alert"
+        android:key="alertNotificationVisibility"
+        android:dependency="notificationVisibilityByPriority"
+        android:summary="@string/choose_notification_visibility_summary"
+        />
+
+    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        android:persistent="true"
+        android:entries="@array/notification_visibility_entries"
+        android:entryValues="@array/notification_visibility_values"
+        android:title="@string/choose_notification_visibility_warning"
+        android:key="warningNotificationVisibility"
+        android:dependency="notificationVisibilityByPriority"
+        android:summary="@string/choose_notification_visibility_summary"
+        android:defaultValue="0" />
+
+    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        android:persistent="true"
+        android:entries="@array/notification_visibility_entries"
+        android:entryValues="@array/notification_visibility_values"
+        android:title="@string/choose_notification_visibility_normal"
+        android:key="normalNotificationVisibility"
+        android:dependency="notificationVisibilityByPriority"
+        android:summary="@string/choose_notification_visibility_summary"
+        android:defaultValue="0" />
+    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        android:persistent="true"
+        android:entries="@array/notification_visibility_entries"
+        android:entryValues="@array/notification_visibility_values"
+        android:title="@string/choose_notification_visibility_none"
+        android:key="noneNotificationVisibility"
+        android:dependency="notificationVisibilityByPriority"
+        android:summary="@string/choose_notification_visibility_summary"
+        android:defaultValue="0" />
+</PreferenceScreen>
