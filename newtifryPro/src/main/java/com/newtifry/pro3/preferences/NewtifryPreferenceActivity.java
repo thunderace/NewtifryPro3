@@ -147,7 +147,7 @@ public class NewtifryPreferenceActivity extends AppCompatPreferenceActivity {
 				// Create connection to send FCM Message request.
 				URL url = new URL("https://fcm.googleapis.com/fcm/send");
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestProperty("Authorization", "key=" + CommonUtilities.FCM_AUTH_KEY);
+//				conn.setRequestProperty("Authorization", "key=" + CommonUtilities.FCM_AUTH_KEY);
 				conn.setRequestProperty("Content-Type", "application/json");
 				conn.setRequestMethod("POST");
 				conn.setDoOutput(true);

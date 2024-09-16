@@ -27,12 +27,7 @@ public class NewtifryProHelper {
 	public final static String NOTIFICATION_SEEN = "com.newtifry.pro3.NotificationSeen";
 	public final static String NOTIFICATION_SEEN_ALL = "com.newtifry.pro3.NotificationSeenAll";
 	public final static String NOTIFICATION_CANCEL_UNDO = "com.newtifry.pro3.NotificationCancelUndo";
-/*
-    // for alarm
-	public final static int ALARM_PURGE_REQUEST_CODE = 342513;
-	public final static String ACTION_PURGE = "com.newtifry.pro3.intent.action.ACTION_PURGE";
-*/
-	
+
     public interface IntentExtras {
     	String ID = "com.newtifry.pro3.ID";
     	//String IMG_ID = "com.newtifry.pro3.IMG_ID";
@@ -59,22 +54,4 @@ public class NewtifryProHelper {
 	public final static int EVENT_NEW_MESSAGE = 0;
 	// TO SMARTWATCH PLUGIN
 	public final static String MESSAGE_IMAGES = "com.newtifry.pro3.intent.action.MESSAGE_IMAGES";
-/*
-	public final static int NP_NOT_INSTALLED = 234;
-	public final static int NP_INSTALLED = 245;
-	public final static int NP_VERSION_MISMATCH = 299;
-
-    public static int isNewtifryProInstalled(@org.jetbrains.annotations.NotNull Context context) {
-		final PackageManager pm = context.getPackageManager();
-		try {
-			PackageInfo pi = pm.getPackageInfo("com.newtifry.pro3", 0);
-			if (pi.versionCode < 12) {
-				return NP_VERSION_MISMATCH;
-			}
-		} catch (NameNotFoundException e) {
-			return NP_NOT_INSTALLED;
-		}
-		return NP_INSTALLED;
-    }
- */
 }

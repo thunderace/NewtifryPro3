@@ -42,7 +42,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
  * app.
  */
 public final class CommonUtilities {
-    public static final String TAG = "NewtifryPro";
+    public static final String TAG = "NewtifryPro3";
 	public static final String FCM_UPDATE_INTENT = "com.newtifry.pro3.FCMUpdate";
 	public static final String MESSAGE_DDB_CHANGE_INTENT = "com.newtifry.pro3.DDBDeleteItem(s)";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
@@ -58,15 +58,6 @@ public final class CommonUtilities {
 	private static int SLEEP_NOTIFICATION_ID = 0XDEAD;
 	public static final int ID_SPEAK_SERVICE = 1101;
 	public static final int ID_NOTIFICATION_SERVICE = 101;
-	/// WARNING FCM_AUTH_KEY and FCM_SENDER_ID must come from the same Google project
-	// used only for test
-	// ancienne version : projet FCM
-	//public final static String FCM_AUTH_KEY = "AIzaSyBWOvdmm9gXfWzm7SqVQR2A3D4GVwqnVGk";
-	//public final static String FCM_SENDER_ID = "209279999164";
-	// nouveau : newtifryPro
-	public final static String FCM_AUTH_KEY = "AIzaSyC6F4WsyLiJlFXWdek7mCrI57i12LzCXYQ";
-	public final static String FCM_SENDER_ID = "78224347792";
-	//public final static String FCM_TOPIC = "newtifrypro";
 	public final String PRIORITY_NONE = "0";
 	public final String PRIORITY_INFO = "1";
 	public final String PRIORITY_WARNING = "2";
@@ -79,11 +70,6 @@ public final class CommonUtilities {
 	public static final int ZENMODE_NONE = 2; // total silence
 	public static final int ZENMODE_ALARMS = 3; /// alarm only
 
-	
-	public static String iv = "newtifryPro94290";
-	
-	public final static String welcome = Secure.ANDROID_ID;
-	
 	public static File getPublicMediaDir() {
 		File dir = new File(Environment.getExternalStorageDirectory(),
 				"NewtifryPro2/images");
