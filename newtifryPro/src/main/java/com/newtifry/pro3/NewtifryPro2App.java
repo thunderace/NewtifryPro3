@@ -28,7 +28,7 @@ public class NewtifryPro2App extends Application {
 	private Thread.UncaughtExceptionHandler defaultUEH;
 
 	// handler listener
-	private Thread.UncaughtExceptionHandler _unCaughtExceptionHandler =
+	private final Thread.UncaughtExceptionHandler _unCaughtExceptionHandler =
 			new Thread.UncaughtExceptionHandler() {
 				@Override
 				public void uncaughtException(Thread thread, Throwable ex) {

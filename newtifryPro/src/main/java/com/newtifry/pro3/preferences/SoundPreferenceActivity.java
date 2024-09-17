@@ -58,11 +58,7 @@ public class SoundPreferenceActivity extends AppCompatPreferenceActivity {
     };
 
     public void toggleUseSoundByPriorityPreferences( boolean useByProritySound ) {
-        if (useByProritySound) {
-            globalNotification.setEnabled(false);
-        } else {
-            globalNotification.setEnabled(true);
-        }
+        globalNotification.setEnabled(!useByProritySound);
     }
 
     Preference.OnPreferenceChangeListener onNotificationPreferenceChanged = new Preference.OnPreferenceChangeListener() {

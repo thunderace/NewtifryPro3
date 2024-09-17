@@ -23,7 +23,7 @@ public class FCMFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		WebView webView = (WebView) getActivity().findViewById(
+		WebView webView = getActivity().findViewById(
 				R.id.help_fcm_webview);
 		webView.loadUrl("file:///android_asset/" + getString(R.string.help_fcm_url_to_load) + ".html");
 	}		

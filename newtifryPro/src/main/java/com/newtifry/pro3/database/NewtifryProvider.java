@@ -272,7 +272,6 @@ public class NewtifryProvider extends ContentProvider
 		Intent smartwatchIntent = new Intent(NewtifryProHelper.MESSAGE_DELETED);
 		smartwatchIntent.putExtra(NewtifryProHelper.IntentExtras.ID,messageId);
 		NewtifryPro2App.getContext().sendBroadcast(smartwatchIntent);
-		CommonUtilities.updateNovaUnreadCounter(context);
 	}
 
     /**
@@ -285,7 +284,7 @@ public class NewtifryProvider extends ContentProvider
      */
     public static void deleteItems(Context context, boolean onlyRead) {
     	String query = null;
-    	if (Preferences.getAllowAllSeenDeletePinnedAndLockedMessages(context) == true) {
+    	if (Preferences.getAllowAllSeenDeletePinnedAndLockedMessages(context)) {
     		// delete sticky and locked too
         	if (onlyRead) {
         		query = NewtifryDatabase.KEY_SEEN + "=1";
@@ -305,6 +304,5 @@ public class NewtifryProvider extends ContentProvider
 		getContext().getContentResolver().notifyChange(uri, null);
 		Intent updateUIIntent = new Intent(CommonUtilities.MESSAGE_DDB_CHANGE_INTENT);
 		LocalBroadcastManager.getInstance(getContext()).sendBroadcast(updateUIIntent);
-		CommonUtilities.updateNovaUnreadCounter(getContext());
 	}
 }

@@ -8,7 +8,7 @@ import android.database.CursorWrapper;
 //            mAdapter.swapCursor(cursorWrapper);
 public class SwipeToDeleteCursorWrapper extends CursorWrapper {
 	private int mVirtualPosition;
-    private int mHiddenPosition;
+    private final int mHiddenPosition;
     public SwipeToDeleteCursorWrapper(Cursor cursor, int hiddenPosition) {
         super(cursor);
         mVirtualPosition = -1;

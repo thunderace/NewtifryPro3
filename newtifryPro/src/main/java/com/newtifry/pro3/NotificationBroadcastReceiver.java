@@ -57,7 +57,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 			}
 
 			NewtifryMessage2 message = NewtifryMessage2.fromFCM(data, false);
-			if (message.getPriority() > -1 || message.getNotify() == 1 || Preferences.showInvisibleMessages(context) == true) {
+			if (message.getPriority() > -1 || message.getNotify() == 1 || Preferences.showInvisibleMessages(context)) {
 				UniversalNotificationManager.getInstance(context).incNewMessagesCount();
 			}
             MyFcmListenerService.messageProcess(context, message);
@@ -98,7 +98,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 		if (action.equals(NewtifryProHelper.NOTIFICATION_DELETE)) { // from mobile only
 			NewtifryMessage2 message = NewtifryMessage2.get(context,  messageId);
 			if (message != null) {
-				if (Preferences.isUndoEnable(context) == true) {
+				if (Preferences.isUndoEnable(context)) {
 					message.setDeleted(true);
 					message.save(context);
 					NewtificationService.createUndoNotification(context, messageId);
@@ -135,7 +135,6 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                 NewtifryProvider.deleteItem(context, messageId);
             }
 	        UniversalNotificationManager.getInstance(context).cancelWearNotification(wearNotificationId);
-            return;
         }
     }
 }

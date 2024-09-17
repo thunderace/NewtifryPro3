@@ -71,10 +71,10 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 
 	private Callbacks activityCallbacks = sDummyCallbacks;
 	public interface Callbacks {
-		public void onShowImageMenuSetVisible(boolean show);
+		void onShowImageMenuSetVisible(boolean show);
 	}
 
-	private static Callbacks sDummyCallbacks = new Callbacks() {
+	private static final Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
 		public void onShowImageMenuSetVisible(boolean show) {
 		}
@@ -91,7 +91,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 			messageId = arguments.getLong(ARG_ITEM_ID);
 			message = NewtifryMessage2.get(getActivity(), messageId);
 		}
-		if (NewtifryMessageListActivity.isTwoPane() == false) {
+		if (!NewtifryMessageListActivity.isTwoPane()) {
 			setHasOptionsMenu(true); // this will call onCreateOptionsMenu (Sherlock action)
 		}
 
@@ -111,7 +111,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if (NewtifryMessageListActivity.isTwoPane() == true) {
+		if (NewtifryMessageListActivity.isTwoPane()) {
 			// Activities containing this fragment must implement its callbacks.
 			if (!(activity instanceof Callbacks)) {
 				throw new IllegalStateException(
@@ -134,7 +134,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 		showImageMenu.setIcon(R.drawable.ic_image_white_24dp);
 		MenuItemCompat.setShowAsAction(showImageMenu, MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		if (showImageMenuInitialState != -1) {
-			showImageMenuSetVisible(viewPagerPosition, showImageMenuInitialState == 1 ? true : false);
+			showImageMenuSetVisible(viewPagerPosition, showImageMenuInitialState == 1);
 		}
 		
 		stickMenu = menu.add(0, NewtifryMessageListActivity.STICK_MENU_ID, Menu.NONE, R.string.stick_menu_entry);
@@ -161,7 +161,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 		if (stopSpeakMenu == null) {
 			return; // for call from onResume();
 		}
-		if (Preferences.getSpeakMessage(getActivity()) == true) {
+		if (Preferences.getSpeakMessage(getActivity())) {
 			stopSpeakMenu.setVisible(true);
 			startSpeakMenu.setVisible(true);
 		} else {
@@ -274,7 +274,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 		if (position != viewPagerPosition) {
 			return;
 		}
-		if (NewtifryMessageListActivity.isTwoPane() == true) {
+		if (NewtifryMessageListActivity.isTwoPane()) {
 			// delegate the menu to main activity
 			activityCallbacks.onShowImageMenuSetVisible(show);
 		} else {
@@ -283,7 +283,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 				showImageMenu.getIcon().setAlpha(show ? 255: 64);
 //				showImageMenu.setVisible(show); // fix 1.0.1
 			} else {
-				showImageMenuInitialState = (show == true) ? 1 : 0;
+				showImageMenuInitialState = (show) ? 1 : 0;
 			}
 		}
 	}
@@ -311,7 +311,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 	private void manageStickyLockedIcon() {
 
 		View rootView = getView();
-		ImageView sticky = (ImageView) rootView.findViewById(R.id.message_detail_sticky);
+		ImageView sticky = rootView.findViewById(R.id.message_detail_sticky);
 			sticky.setOnClickListener(this);	
 		if (message == null) {
 			sticky.setVisibility(View.INVISIBLE);
@@ -332,20 +332,20 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 	}
 	private void refresh() {
 		rootView = getView();
-		viewPager = (ViewPager)rootView.findViewById(R.id.pager);
+		viewPager = rootView.findViewById(R.id.pager);
 		viewPager.setOnPageChangeListener(this);
-		imageUrlTextView[0] = (TextView) rootView.findViewById(R.id.message_detail_image_url1);
-		imageUrlTextView[1] = (TextView) rootView.findViewById(R.id.message_detail_image_url2);
-		imageUrlTextView[2] = (TextView) rootView.findViewById(R.id.message_detail_image_url3);
-		imageUrlTextView[3] = (TextView) rootView.findViewById(R.id.message_detail_image_url4);
-		imageUrlTextView[4] = (TextView) rootView.findViewById(R.id.message_detail_image_url5);
-		sourceNameTextView = (TextView) rootView.findViewById(R.id.message_detail_title_or_source);
-		timestampTextView = (ExpandableTextView) rootView.findViewById(R.id.message_detail_timestamp);
+		imageUrlTextView[0] = rootView.findViewById(R.id.message_detail_image_url1);
+		imageUrlTextView[1] = rootView.findViewById(R.id.message_detail_image_url2);
+		imageUrlTextView[2] = rootView.findViewById(R.id.message_detail_image_url3);
+		imageUrlTextView[3] = rootView.findViewById(R.id.message_detail_image_url4);
+		imageUrlTextView[4] = rootView.findViewById(R.id.message_detail_image_url5);
+		sourceNameTextView = rootView.findViewById(R.id.message_detail_title_or_source);
+		timestampTextView = rootView.findViewById(R.id.message_detail_timestamp);
 				//.findViewById(R.id.expand_text_view);
 		//timestampTextView = (TextView) rootView.findViewById(R.id.message_detail_timestamp);
 
-		messageTextView = (TextView) rootView.findViewById(R.id.message_detail_content);
-		url = (TextView) rootView.findViewById(R.id.message_detail_url);
+		messageTextView = rootView.findViewById(R.id.message_detail_content);
+		url = rootView.findViewById(R.id.message_detail_url);
 		
 		if (message != null) {
 			this.viewPager.setAdapter(new ImagePagerAdapter(message));
@@ -358,7 +358,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 				viewPager.setVisibility(View.GONE);
 				
 			} else {
-				if (Preferences.getShowImages(getActivity()) == true || this.forceImageDisplay) {
+				if (Preferences.getShowImages(getActivity()) || this.forceImageDisplay) {
 					for (int i = 0; i < 5; i++) {
 						imageUrlTextView[i].setVisibility(View.GONE);
 					}
@@ -388,11 +388,11 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 			}
 			int hashCount = message.getHashCount();
 			if (hashCount > 1) {
-				sourceName += " (" + Integer.toString(hashCount)+")";
+				sourceName += " (" + hashCount +")";
 			}
 			sourceNameTextView.setText(sourceName);
 			int priority = message.getPriority();
-			if (Preferences.getUsePriorityColor(getActivity()) == true && priority > 0) {
+			if (Preferences.getUsePriorityColor(getActivity()) && priority > 0) {
 				int color = -1;
 				switch (priority) {
 					case 1 :
@@ -460,7 +460,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 	    	if (loadedBitmap == null) {
 	    		showImageMenuSetVisible(imageId, true);
 	    		
-	    		if (CommonUtilities.okToDownloadData(getActivity()) == false) {
+	    		if (!CommonUtilities.okToDownloadData(getActivity())) {
 		    		if (message.getImageCount() == 1) {
 		    			errorTextView[imageId].setText(R.string.image_alone_load_no_wifi);
 		    		} else {
@@ -496,7 +496,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 	
 	private class ImagePagerAdapter extends PagerAdapter {
 
-		private LayoutInflater inflater;
+		private final LayoutInflater inflater;
 		NewtifryMessage2 message;
 
 		ImagePagerAdapter(NewtifryMessage2 message) {
@@ -517,9 +517,9 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 		@Override
 		public Object instantiateItem(ViewGroup view, final int position) {
 			View imageLayout = inflater.inflate(R.layout.message_detail_pager_item, view, false);
-			imageView[position] = (ImageView) imageLayout.findViewById(R.id.image);
-			progressBar[position] = (ProgressBar) imageLayout.findViewById(R.id.loading);
-			errorTextView[position] = (TextView)imageLayout.findViewById(R.id.loading_error);
+			imageView[position] = imageLayout.findViewById(R.id.image);
+			progressBar[position] = imageLayout.findViewById(R.id.loading);
+			errorTextView[position] = imageLayout.findViewById(R.id.loading_error);
             loadImage(position, false);
 			view.addView(imageLayout, 0);
 			return imageLayout;
@@ -541,7 +541,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 	}
 
 	public void loadImage(int position, boolean force) {
-		if (force == false && message.getImageLoadingStatus(position) == NewtifryMessage2.IMAGE_LOADING_ERROR ) {
+		if (!force && message.getImageLoadingStatus(position) == NewtifryMessage2.IMAGE_LOADING_ERROR ) {
 			// dont try to load again
     		if (message.getImageCount() == 1) {
     			errorTextView[position].setText(R.string.image_alone_load_error);
@@ -561,23 +561,13 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 		message.setImageLoadingStatus(position, NewtifryMessage2.IMAGE_LOADING);
 		message.save(getActivity());
 		showImageMenuSetVisible(position, false);
-		if (Preferences.getCacheBitmap(getActivity()) == true && message.getNoCache() == false) {
-            UrlImageViewHelper.setUrlDrawable(getActivity(),
-            									imageView[position], 
-            									imageURL, 
-            									message.getId(),
-            									position, 	
-            									urlImageViewCallback,
-            									true);
-		} else {
-            UrlImageViewHelper.setUrlDrawable(getActivity(), 
-            									imageView[position],
-            									imageURL, 
-            									message.getId(),
-            									position, 
-            									urlImageViewCallback, 
-            									false);
-		}
+        UrlImageViewHelper.setUrlDrawable(getActivity(),
+                                            imageView[position],
+                                            imageURL,
+                                            message.getId(),
+                                            position,
+                                            urlImageViewCallback,
+                Preferences.getCacheBitmap(getActivity()) && !message.getNoCache());
 	}
 	
 	@Override
@@ -591,11 +581,7 @@ public class NewtifryMessageDetailFragment extends Fragment implements OnClickLi
 	@Override
 	public void onPageSelected(int position) {
 		viewPagerPosition = position;
-        if (message.getImageLoadingStatus(position) == NewtifryMessage2.IMAGE_NOT_LOADED || 
-        		message.getImageLoadingStatus(position) == NewtifryMessage2.IMAGE_LOADING_ERROR) {
-        	showImageMenuSetVisible(position, true);
-        } else {
-        	showImageMenuSetVisible(position, false);
-        }
+        showImageMenuSetVisible(position, message.getImageLoadingStatus(position) == NewtifryMessage2.IMAGE_NOT_LOADED ||
+                message.getImageLoadingStatus(position) == NewtifryMessage2.IMAGE_LOADING_ERROR);
 	}
 }

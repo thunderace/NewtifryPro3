@@ -32,13 +32,13 @@ import com.newtifry.pro3.shared.NewtifryProHelper;
 import java.util.LinkedList;
 
 public class UniversalNotificationManager {
-    private int maxStackedWearNotificationCount =  20;
+    private final int maxStackedWearNotificationCount =  20;
     private final static int BASE_WEAR_NOTIFICATION_ID = 2;
     private final static int MOBILE_NOTIFICATION_ID = 8;
     private final static Object lock = new Object();
     private static UniversalNotificationManager sInstance = null;
-    private Context mContext;
-    private Bitmap background;
+    private final Context mContext;
+    private final Bitmap background;
 
 	private int newMessageCount = 0;
 	public  int getNewMessagesCount() {
@@ -101,8 +101,8 @@ public class UniversalNotificationManager {
 	}
 
 
-	private static LinkedList<Integer> freeWearNotificationId = new LinkedList<Integer>();
-	private static LinkedList<Integer> usedWearNotificationId = new LinkedList<Integer>();
+	private static final LinkedList<Integer> freeWearNotificationId = new LinkedList<Integer>();
+	private static final LinkedList<Integer> usedWearNotificationId = new LinkedList<Integer>();
     public static UniversalNotificationManager getInstance(Context context) {
         if (sInstance == null) {
             // When storing a reference to a context, use the application context.
@@ -254,10 +254,7 @@ public class UniversalNotificationManager {
     private boolean isValidNotificationId(int notificationId) {
         //return true;
         //return usedWearNotificationId.contains((Integer)notificationId);
-        if (notificationId >= 0 && notificationId < maxStackedWearNotificationCount) {
-			return true;
-		}
-		return false;
+        return notificationId >= 0 && notificationId < maxStackedWearNotificationCount;
     }
 
 	private void releaseWearNotificationId(int id) {
@@ -299,7 +296,7 @@ public class UniversalNotificationManager {
         final SpannableString spannableString;
         spannableString = new SpannableString(str);
 	    int priority = msg.getPriority();
-        if (Preferences.getUsePriorityColor(mContext) == true &&  priority > 0 ) {
+        if (Preferences.getUsePriorityColor(mContext) &&  priority > 0 ) {
             int bg = -1;
             switch (priority) {
                 case 1:
@@ -412,7 +409,7 @@ public class UniversalNotificationManager {
 		        .setSortKey(Long.toString(messageId))
 		        .setDeleteIntent(getWearCancelPendingIntent(
 				        mContext, notifId, messageId));
-        if (vibrate == true) {
+        if (vibrate) {
             wearNotification.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
         }
 //        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // Nougat

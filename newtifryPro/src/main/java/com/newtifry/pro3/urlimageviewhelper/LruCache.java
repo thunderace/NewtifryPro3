@@ -15,7 +15,7 @@ public class LruCache<K, V> {
 
     /** Size of this cache in units. Not necessarily the number of elements. */
     private int size;
-    private int maxSize;
+    private final int maxSize;
 
     private int putCount;
     private int createCount;

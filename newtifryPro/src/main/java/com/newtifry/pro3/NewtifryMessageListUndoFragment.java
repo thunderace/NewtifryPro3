@@ -65,10 +65,10 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
     private static final String FIRST_VISIBLE_POSITION = "firstVisiblePosition";
 	private Callbacks activityCallbacks = sDummyCallbacks;
 	public interface Callbacks {
-		public void onItemSelected(long id);
+		void onItemSelected(long id);
 	}
 
-	private static Callbacks sDummyCallbacks = new Callbacks() {
+	private static final Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
 		public void onItemSelected(long id) {
 		}
@@ -106,14 +106,11 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
 	}
 
 	public void setSort(boolean sortByPriority, boolean sortBySource) {
-		boolean changed = false;
-		if (NewtifryMessageListUndoFragment.sortBySource != sortBySource || NewtifryMessageListUndoFragment.sortByPriority != sortByPriority) {
-			changed = true;
-		}
-		NewtifryMessageListUndoFragment.sortBySource = sortBySource;
+		boolean changed = NewtifryMessageListUndoFragment.sortBySource != sortBySource || NewtifryMessageListUndoFragment.sortByPriority != sortByPriority;
+        NewtifryMessageListUndoFragment.sortBySource = sortBySource;
 		NewtifryMessageListUndoFragment.sortByPriority = sortByPriority;
-		if (changed == true) {
-            getLoaderManager().restartLoader(NEWTIFRYPRO_LIST_LOADER, null, (LoaderCallbacks<Cursor>) this);
+		if (changed) {
+            getLoaderManager().restartLoader(NEWTIFRYPRO_LIST_LOADER, null, this);
 		}
 	}
 
@@ -126,7 +123,7 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.list_fragment, container, false);
-        mListView = (EnhancedListView)view.findViewById(android.R.id.list);
+        mListView = view.findViewById(android.R.id.list);
         mListView.setDismissCallback(new com.newtifry.pro3.EnhancedListView.EnhancedListView.OnDismissCallback() {
             @Override
             public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
@@ -156,7 +153,7 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
                	// new for test anti flicker
                	SwipeToDeleteCursorWrapper cursorWrapper = new SwipeToDeleteCursorWrapper(adapter.getCursor(), position);
                	adapter.swapCursor(cursorWrapper);
-               	if (Preferences.isUndoEnable(getActivity()) == false) {
+               	if (!Preferences.isUndoEnable(getActivity())) {
                		return null;
                	}
                 return new EnhancedListView.Undoable() {
@@ -183,16 +180,13 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
             @Override
             public boolean onShouldSwipe(EnhancedListView listView, final int position) {
        			Cursor cursor = (Cursor) adapter.getItem(position);
-            	boolean seen = cursor.getInt(cursor.getColumnIndex(NewtifryDatabase.KEY_SEEN)) == 0 ? false : true;
-            	boolean locked = cursor.getInt(cursor.getColumnIndex(NewtifryDatabase.KEY_LOCKED)) == 0 ? false : true;
-            	boolean sticky = cursor.getInt(cursor.getColumnIndex(NewtifryDatabase.KEY_STICKY)) == 0 ? false : true;
-            	if ((locked == true || sticky == true) && Preferences.getAllowDeletePinnedAndLockedMessages(getActivity()) == false) {
+            	boolean seen = cursor.getInt(cursor.getColumnIndex(NewtifryDatabase.KEY_SEEN)) != 0;
+            	boolean locked = cursor.getInt(cursor.getColumnIndex(NewtifryDatabase.KEY_LOCKED)) != 0;
+            	boolean sticky = cursor.getInt(cursor.getColumnIndex(NewtifryDatabase.KEY_STICKY)) != 0;
+            	if ((locked || sticky) && !Preferences.getAllowDeletePinnedAndLockedMessages(getActivity())) {
         			return false;
         		}
-            	if (seen == false && Preferences.getDeleteUnseenMessages(getActivity()) == false) {
-        			return false;
-        		}
-       			return true;
+                return seen || Preferences.getDeleteUnseenMessages(getActivity());
             }
         });
         	
@@ -211,7 +205,7 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
         mListView.setCacheColorHint(Color.TRANSPARENT); // Improves scrolling performance
         getLoaderManager().initLoader(NEWTIFRYPRO_LIST_LOADER, null, this);
         
-        if (Preferences.getUseSmallRow(getActivity()) == true) {
+        if (Preferences.getUseSmallRow(getActivity())) {
 	        adapter = new SimpleCursorAdapter(
 	        		getActivity().getApplicationContext(), 
 	        		R.layout.message_list_row4_1line,
@@ -226,8 +220,8 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
         	
         }
         adapter.setViewBinder(new NewtifryProViewBinder());
-        mListView.setAdapter(adapter);;
-	}
+        mListView.setAdapter(adapter);
+    }
 	private String getTextMessage(String msg) {
 		try {
 			return Html.fromHtml(msg).toString();
@@ -250,7 +244,7 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
     			if (defaultTextColor == 0) {
     				defaultTextColor = sourceTextView.getCurrentTextColor();
     			}
-    			if (Preferences.getUsePriorityColor(NewtifryMessageListActivity.context) == true && priority > 0 ) {
+    			if (Preferences.getUsePriorityColor(NewtifryMessageListActivity.context) && priority > 0 ) {
     				int bg = -1;
     				switch (priority) {
     					case 1 :
@@ -277,7 +271,7 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
     			}
 
     			if (hashCount > 1) {
-    				sourceTxt += " (" + Integer.toString(hashCount)+")";
+    				sourceTxt += " (" + hashCount +")";
 				}
 
     			if(seen == 0) {
@@ -312,7 +306,7 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
     			msg = getTextMessage(msg);
     			// TODO use spannable
     			TextView twoLinesMessageTextView = (TextView)view;
-    			if (Preferences.getUseSmallRow(getActivity().getApplicationContext()) == false) {
+    			if (!Preferences.getUseSmallRow(getActivity().getApplicationContext())) {
     				twoLinesMessageTextView.setText(msg + "\n");
     			} else {
     				twoLinesMessageTextView.setText(msg);
@@ -344,8 +338,8 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
 
         	if(view.getId() == R.id.message_row_sticky) {
     			ImageView stickyImageView = (ImageView)view;
-    			boolean locked = cursor.getInt(cursor.getColumnIndex(NewtifryDatabase.KEY_LOCKED)) == 0 ? false : true;
-    			if(locked == true) {
+    			boolean locked = cursor.getInt(cursor.getColumnIndex(NewtifryDatabase.KEY_LOCKED)) != 0;
+    			if(locked) {
     				stickyImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon_lock));
     				stickyImageView.setVisibility(View.VISIBLE);
     			} else {
@@ -419,8 +413,8 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
 	public void onResume() {
 		super.onResume();
 		UniversalNotificationManager.getInstance(getActivity()).resetNewMessagesCount();
-		if (refreshLoader == true) {
-			getLoaderManager().restartLoader(NEWTIFRYPRO_LIST_LOADER, null, (LoaderCallbacks<Cursor>) this);
+		if (refreshLoader) {
+			getLoaderManager().restartLoader(NEWTIFRYPRO_LIST_LOADER, null, this);
 		}
 	}
 
@@ -481,7 +475,7 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
 			sort += NewtifryDatabase.KEY_TIMESTAMP + " DESC ";
 		}
 		String selectionArgs = NewtifryDatabase.KEY_DELETED + "=0";
-		if (Preferences.showInvisibleMessages(getActivity()) == false) {
+		if (!Preferences.showInvisibleMessages(getActivity())) {
 			selectionArgs +=  " AND "+ NewtifryDatabase.KEY_PRIORITY + " >= 0";
 		}
         CursorLoader cursorLoader = new CursorLoader(getActivity(), NewtifryProvider.CONTENT_URI_MESSAGES,
@@ -502,25 +496,24 @@ LoaderManager.LoaderCallbacks<Cursor> , OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		// TODO : Handle showPriorityColor, showInvisibleMessages, useSmallRows, cleanOlderThan, cleanMessageLimit
-		if (key.equals(Preferences.USE_PRIORITY_COLORS) == true || 
-				key.equals(Preferences.SHOW_INVISIBLE) == true || 	
-				key.equals(Preferences.SMALL_ROW) == true ||
-				key.equals(Preferences.ALERT_TITLE_COLOR) == true ||
-				key.equals(Preferences.WARNING_TITLE_COLOR) == true ||
-				key.equals(Preferences.INFO_TITLE_COLOR) == true
+		if (key.equals(Preferences.USE_PRIORITY_COLORS) ||
+                key.equals(Preferences.SHOW_INVISIBLE) ||
+                key.equals(Preferences.SMALL_ROW) ||
+                key.equals(Preferences.ALERT_TITLE_COLOR) ||
+                key.equals(Preferences.WARNING_TITLE_COLOR) ||
+                key.equals(Preferences.INFO_TITLE_COLOR)
 				) {
 			refreshLoader = true;
 			return;
 		}
-		if (key.equals(Preferences.MAX_MESSAGE_COUNT) == true ) {
+		if (key.equals(Preferences.MAX_MESSAGE_COUNT)) {
             NewtifryMessage2.purge(NewtifryPro2App.getContext());
 			refreshLoader = true;
 			return;
 		}
-		if (key.equals(Preferences.AUTO_CLEAN_MESSAGE_DAYS) == true ) {
+		if (key.equals(Preferences.AUTO_CLEAN_MESSAGE_DAYS)) {
             NewtifryMessage2.deleteOlderThan(NewtifryPro2App.getContext());
 			refreshLoader = true;
-			return;
-		}
+        }
 	}
 }

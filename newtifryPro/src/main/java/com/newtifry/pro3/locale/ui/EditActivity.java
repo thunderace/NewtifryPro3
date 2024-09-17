@@ -67,7 +67,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_locale_edit);
         setResult(RESULT_CANCELED);
 
-        final ListView list = (ListView) findViewById(R.id.listView);
+        final ListView list = findViewById(R.id.listView);
         mItems = new ArrayList<>();
         mItems.add(new ActionItem(NewtifryProHelper.MESSAGE_SHOW_LAST, getString(R.string.showLastMessage)));
 //        mItems.add(new ActionItem(NewtifryProHelper.MESSAGE_SHOW, getString(R.string.showMessage)));

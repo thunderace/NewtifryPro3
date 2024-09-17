@@ -43,11 +43,6 @@
 		    <string name="email_fcmid_summary">Envoi de l\'identifiant par email.</string>
 			<string name="user_topic">Topic de l\'appareil (A préfixer avec votre Sender Id lors de l\'envoi)</string>
 			<string name="user_topic_summary">A préfixer avec votre Sender Id lors de l\'envoi</string>
-		    <string name="serverless_mode_test">Test</string>
-		    <string name="serverless_mode_test_summary">Envoi d\'un message de test.</string>
-			<string name="user_topic_error_title">Nom de topic invalide</string>
-			<string name="user_topic_error_text">seul les caractères a-z, A-Z, 0-9 et - sont autorisés (pas d\'espace)</string>
-
 	    <string name="notification_settings_category">Notifications</string>
 	        <string name="notification_enable_checkbox">Activer les notifications</string>
 	        <string name="always_notify_smartwatch_checkbox">Notifier applis externes</string>

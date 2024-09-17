@@ -21,7 +21,7 @@ public class ChangelogFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		WebView webView = (WebView) getActivity().findViewById(
+		WebView webView = getActivity().findViewById(
 				R.id.changelogcontent);
 		webView.loadUrl("file:///android_asset/" + getString(R.string.help_changelog_url_to_load) + ".html");
 	}

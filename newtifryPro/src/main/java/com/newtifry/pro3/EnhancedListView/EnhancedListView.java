@@ -308,9 +308,9 @@ public class EnhancedListView extends ListView {
     private int mUndoHideDelay = 5000;
     private int mSwipingLayout;
 
-    private List<Undoable> mUndoActions = new ArrayList<Undoable>();
-    private SortedSet<PendingDismissData> mPendingDismisses = new TreeSet<PendingDismissData>();
-    private List<View> mAnimatedViews = new LinkedList<View>();
+    private final List<Undoable> mUndoActions = new ArrayList<Undoable>();
+    private final SortedSet<PendingDismissData> mPendingDismisses = new TreeSet<PendingDismissData>();
+    private final List<View> mAnimatedViews = new LinkedList<View>();
     private int mDismissAnimationRefCount;
 
     private boolean mSwipePaused;
@@ -324,7 +324,7 @@ public class EnhancedListView extends ListView {
     private float mScreenDensity;
 
     private int mValidDelayedMsgId;
-    private Handler mHideUndoHandler = new HideUndoPopupHandler();
+    private final Handler mHideUndoHandler = new HideUndoPopupHandler();
 //    private PopupWindow mUndoPopup;
 //    private Button mUndoButton;
 //    private TextView mUndoPopupTextView;

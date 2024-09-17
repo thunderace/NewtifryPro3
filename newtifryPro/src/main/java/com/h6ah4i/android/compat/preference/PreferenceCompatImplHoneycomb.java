@@ -119,7 +119,6 @@ class PreferenceCompatImplHoneycomb extends PreferenceCompatImpl {
                     .putStringSet(key, values)
                     .apply();
         } catch (ClassCastException e) {
-            return;
         } catch (RuntimeException e) {
             Log.d(TAG, "checkAndUpgradeToNativeStringSet", e);
         }

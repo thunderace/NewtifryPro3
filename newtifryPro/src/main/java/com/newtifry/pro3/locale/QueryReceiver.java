@@ -8,7 +8,7 @@ import android.util.Log;
 
 
 public class QueryReceiver extends BroadcastReceiver {
-	private static String LOG_TAG = "QueryReceiver";
+	private static final String LOG_TAG = "QueryReceiver";
 	// Since the lifetime of a BroadcastReceiver object is very short, this Map needs to
 	// have static lifetime instead of object lifetime.
 //	private static SparseArray <Bundle> mDetectedEvents = new SparseArray<Bundle>();

@@ -48,7 +48,7 @@ public class NewtifryMessage2 {
 	private int priority;
 	private boolean noCache = false;
 	private String sourceName;
-	private boolean crypted = false;
+	private final boolean crypted = false;
 	private boolean deleted = false;
 	private boolean sticky = false;
 	private boolean locked = false;
@@ -134,7 +134,7 @@ public class NewtifryMessage2 {
 	}
 	
 	public void setDeleted(boolean deleted) {
-		if (this.deleted != deleted && deleted == false && this.getId() != -1) {
+		if (this.deleted != deleted && !deleted && this.getId() != -1) {
 			Intent smartwatchIntent = new Intent(NewtifryProHelper.MESSAGE_NEW);
 			smartwatchIntent.putExtra(NewtifryProHelper.IntentExtras.ID,this.getId());
 			smartwatchIntent.putExtra(NewtifryProHelper.IntentExtras.TITLE,this.getSourceName() + "-" + this.getTitle());
@@ -447,7 +447,7 @@ public class NewtifryMessage2 {
 
 	public void setSeen(Boolean seen) {
 		if (this.seen != seen && this.getId() != -1) {
-			Intent smartwatchIntent = new Intent(seen == true ? NewtifryProHelper.MESSAGE_SEEN : NewtifryProHelper.MESSAGE_UNSEEN);
+			Intent smartwatchIntent = new Intent(seen ? NewtifryProHelper.MESSAGE_SEEN : NewtifryProHelper.MESSAGE_UNSEEN);
 			smartwatchIntent.putExtra(NewtifryProHelper.IntentExtras.ID,this.getId());
 			NewtifryPro2App.getContext().sendBroadcast(smartwatchIntent);
 		}
@@ -539,8 +539,8 @@ public class NewtifryMessage2 {
 		} else {
 			int idx = 0;
 			for (int i = 1; i < 6; i++) {
-				if (data.containsKey("image" + Integer.toString(i))) {
-					incoming.setImage(idx, NewtifryMessage2.decode(data.get("image" + Integer.toString(i)).toString(), base64));
+				if (data.containsKey("image" + i)) {
+					incoming.setImage(idx, NewtifryMessage2.decode(data.get("image" + i).toString(), base64));
 					idx++;
 				}
 			}
@@ -618,7 +618,7 @@ public class NewtifryMessage2 {
 		return NewtifryMessage2.genericList(context, 
 													NewtifryDatabase.KEY_SEEN + "=0 AND " + NewtifryDatabase.KEY_DELETED + "=0", 
 													null, 
-													NewtifryDatabase.KEY_ID + " DESC LIMIT " + String.valueOf(limit));
+													NewtifryDatabase.KEY_ID + " DESC LIMIT " + limit);
 	}
 	
 	private static int countInvisible( Context context ) {
@@ -737,7 +737,7 @@ public class NewtifryMessage2 {
 			if (Preferences.groupMessages(context)) {
 				ArrayList<NewtifryMessage2> messageList =
 						NewtifryMessage2.genericList(context,
-								NewtifryDatabase.KEY_HASH + "=" + Integer.toString(this.hash) + " AND " + NewtifryDatabase.KEY_DELETED + "=0",
+								NewtifryDatabase.KEY_HASH + "=" + this.hash + " AND " + NewtifryDatabase.KEY_DELETED + "=0",
 								null,
 								NewtifryDatabase.KEY_ID + " DESC LIMIT 1");
 				if (messageList.size() == 1) {
@@ -751,9 +751,9 @@ public class NewtifryMessage2 {
 					this.setHashCount(1);
 				}
 				// delete and count unread message with same hash
-				int unreadDeletedCount = NewtifryMessage2.genericDelete(context, NewtifryDatabase.KEY_HASH + "=" + Integer.toString(this.hash) + " AND " + NewtifryDatabase.KEY_SEEN + "=0", null);
+				int unreadDeletedCount = NewtifryMessage2.genericDelete(context, NewtifryDatabase.KEY_HASH + "=" + this.hash + " AND " + NewtifryDatabase.KEY_SEEN + "=0", null);
 				// delete over
-				NewtifryMessage2.genericDelete(context, NewtifryDatabase.KEY_HASH + "=" + Integer.toString(this.hash) + " AND " + NewtifryDatabase.KEY_SEEN + "=1", null);
+				NewtifryMessage2.genericDelete(context, NewtifryDatabase.KEY_HASH + "=" + this.hash + " AND " + NewtifryDatabase.KEY_SEEN + "=1", null);
 				UniversalNotificationManager.getInstance(context).decreaseNewMessagesCount(unreadDeletedCount);
 			} else {
 				this.setHashCount(1);
@@ -829,7 +829,7 @@ public class NewtifryMessage2 {
 	}
 	
 	protected static void purgeInvisible (Context context) {
-		if (Preferences.showInvisibleMessages(context) == true) {
+		if (Preferences.showInvisibleMessages(context)) {
 			return;
 		}
 		int totalCount = countInvisible(context);
@@ -839,7 +839,7 @@ public class NewtifryMessage2 {
 					NewtifryMessage2.genericList(context, 
 														NewtifryDatabase.KEY_PRIORITY + "<0", 
 														null, 
-														NewtifryDatabase.KEY_ID + " ASC LIMIT " + String.valueOf(toDelete));
+														NewtifryDatabase.KEY_ID + " ASC LIMIT " + toDelete);
 	        for (NewtifryMessage2 message: messageList) {
 	        	NewtifryProvider.deleteItem(context, message.getId());
 	        }
@@ -873,7 +873,7 @@ public class NewtifryMessage2 {
 
 		// Parse it, and display in LOCAL timezone.
 		// So, everything older than formattedDate should be removed.
-		NewtifryMessage2.genericDelete(context,  NewtifryDatabase.KEY_LOCKED + "=0 AND " + NewtifryDatabase.KEY_STICKY + "=0 AND " + NewtifryDatabase.KEY_EPOCH + "!=0 AND " + NewtifryDatabase.KEY_EPOCH + " <" + String.valueOf(olderThan.getTime()), null);
+		NewtifryMessage2.genericDelete(context,  NewtifryDatabase.KEY_LOCKED + "=0 AND " + NewtifryDatabase.KEY_STICKY + "=0 AND " + NewtifryDatabase.KEY_EPOCH + "!=0 AND " + NewtifryDatabase.KEY_EPOCH + " <" + olderThan.getTime(), null);
 	}	
 	public static void purge( Context context) {
 		Integer maxMessageCount = 0;
@@ -895,7 +895,7 @@ public class NewtifryMessage2 {
 //														NewtifryDatabase.KEY_TAGCOUNT + "=0 AND " + NewtifryDatabase.KEY_STICKY + "=0", 
 														NewtifryDatabase.KEY_LOCKED + "=0 AND " + NewtifryDatabase.KEY_STICKY + "=0", 
 														null, 
-														NewtifryDatabase.KEY_ID + " ASC LIMIT " + String.valueOf(toDelete));
+														NewtifryDatabase.KEY_ID + " ASC LIMIT " + toDelete);
 	        for (NewtifryMessage2 message: messageList) {
 	        	NewtifryProvider.deleteItem(context, message.getId());
 	        }

@@ -48,10 +48,6 @@ import static com.newtifry.pro3.CommonUtilities.isActivityCallable;
 
 public class NewtifryMessageListActivity extends AppCompatActivity implements
 	NewtifryMessageDetailFragment.Callbacks , NewtifryMessageListUndoFragment.Callbacks {
-
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-
-	private PendingIntent alarmPendingIntent;
     public static Context context;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
@@ -65,7 +61,6 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 	public final static int STOP_SPEAK = 7;
 	public final static int SHOW_IMAGE = 8;
 	public final static int ABOUT_MENU = 9;
-	private final static int REGISTER_MENU_ID = 10;
 	public final static int MARK_UNREAD_MENU_ID =11;
 	public final static int STICK_MENU_ID = 12;
 	public final static int UNLOCK_MENU_ID = 13;
@@ -91,12 +86,6 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 	
 	private View snackBarParentView;
 	private Snackbar mSnackBar;
-    private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjixgR+gCwVTl41t4wIuybTuGcooi4rk+EMw9FYx2V5wUOwzT8rNGQ3Yy6t9kkpzxR2Ybrhf7z4sVQDW5piT+HoUNOWbJ1H7fOB31Vo+q4GXN3Tes2k+u22Lb1UcqGHWqGOlrrt71Ee/sqL6Kple1g/K4uTlX/XvbAKIGPa74okoTjIVqguf+4aO72wOWeuBiOnRM1JAvRSuZhlR4JRWrNAbxT+UxChT5Dvkgy+1mQwx1U6mApwL9yFB1DtuGXHiwwUIPGHPelq8kOK+1sGxx28edulRLcsfBKUVTpZDqeE/dFCPg8UGZPnEAr6rAxkI1rtZoEkS4yOz2bOrnkv+VeQIDAQAB";
-    // Generate your own 20 random bytes, and put them here.
-    private static final byte[] SALT = new byte[] {
-        -38, 51, -12, -1, -99, 32, 34, -28, 7, -25, 75, -13, 64, -102, -38, -11, -13, 38, -44, 59
-    };
-	private ShortcutHelper mHelper;
 	MaterialDialog progressDialog = null;
 
 	private boolean deleteAllOption = false;
@@ -104,33 +93,10 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
-	private static boolean mTwoPane = false;
+	private static final boolean mTwoPane = false;
 	
 	public static boolean isTwoPane() {
 		return mTwoPane;
-	}
-
-	private void showPermanentMessage(final int resId) {
-		if (context == null || snackBarParentView == null) {
-			return;
-		}
-		String message = context.getResources().getText(resId).toString();
-		mSnackBar = Snackbar.make(snackBarParentView, message, Snackbar.LENGTH_INDEFINITE);
-		mSnackBar.setCallback(new Snackbar.Callback() {
-			@Override
-			public void onDismissed(Snackbar snackbar, int event) {
-				if (event == DISMISS_EVENT_SWIPE) {
-					showPermanentMessage(resId);
-					return;
-				}
-			}
-		});
-		mSnackBar.show();
-	}
-	private void hidePermanentMessage() {
-		if (mSnackBar != null && mSnackBar.isShown()) {
-			mSnackBar.dismiss();
-		}
 	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -150,9 +116,6 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 		    }
 		}
         UrlImageViewHelper.cleanup(this, Preferences.getCacheBitmapDurationInMs(this));
-        // always create license checker
-        String deviceId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
-
 		// TTS init
 		if (isActivityCallable(this, "TextToSpeech.engine", TextToSpeech.Engine.ACTION_CHECK_TTS_DATA)) {
 			// Figure out if we have the TTS installed.
@@ -160,9 +123,6 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 			checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
 			startActivityForResult(checkIntent, 0x1010);
 		}
-
-
-		//CommonUtilities.checkNotifierPro(this);
 	    NewtifryProvider.upgradeDDB14(this);
 		NewtifryMessage2.purgeAll(this);
 
@@ -206,12 +166,6 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 	@Override
 	protected void onActivityResult( int requestCode, int resultCode, Intent data ) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if( requestCode == 0x1010 ) {
-			if( resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS ) {
-				// All systems are go.
-			} else {
-			}
-		}
 	}
 
 
@@ -219,7 +173,7 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 		ComponentName serviceComponent = new ComponentName(context, AlarmJobService.class);
 		JobInfo.Builder builder = new JobInfo.Builder(0, serviceComponent);
 		builder.setPeriodic(1000 * 60 * 60 * 48 ); // every 2 days
-		JobScheduler jobScheduler = (JobScheduler)context.getSystemService(context.JOB_SCHEDULER_SERVICE);
+		JobScheduler jobScheduler = (JobScheduler)context.getSystemService(JOB_SCHEDULER_SERVICE);
 		jobScheduler.schedule(builder.build());
 	}
 	
@@ -335,14 +289,10 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 		updateSubTitle();
 	
 		if (stopSpeakMenu != null) {
-			if (Preferences.getSpeakMessage(this) == true) {
-				stopSpeakMenu.setVisible(true);
-			} else {
-				stopSpeakMenu.setVisible(false);
-			}
+            stopSpeakMenu.setVisible(Preferences.getSpeakMessage(this));
 		}
 
-		if (mTwoPane == true && showImageMenu != null && startSpeakMenu != null) {
+		if (mTwoPane && showImageMenu != null && startSpeakMenu != null) {
 			NewtifryMessage2 message = NewtifryMessage2.get(this, lastMessageDetailId);
 			if (message == null) {
 				onShowImageMenuSetVisible(false);
@@ -354,11 +304,7 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 			} else {
 				markUnseenMenu.setVisible(true);
 				onShowImageMenuSetVisible(true);
-				if (Preferences.getSpeakMessage(this) == true) {
-					startSpeakMenu.setVisible(true);
-				} else {
-					startSpeakMenu.setVisible(false);
-				}
+                startSpeakMenu.setVisible(Preferences.getSpeakMessage(this));
 			}
 			if (message.isLocked()) {
 				stickMenu.setVisible(false);
@@ -413,7 +359,7 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 			menu.add(0, DEBUG_MENU3, Menu.NONE, "Debug3");
  		}
 		
-		if (mTwoPane == true) {
+		if (mTwoPane) {
 			startSpeakMenu = menu.add(0, START_SPEAK, Menu.NONE, R.string.start_speak);
 			startSpeakMenu.setIcon(R.drawable.ic_menu_start_speak_white_24dp);
 			MenuItemCompat.setShowAsAction(startSpeakMenu, MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -544,7 +490,7 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 				return true;
 		}
 
-		if (mTwoPane == true) {
+		if (mTwoPane) {
 			NewtifryMessage2 message = NewtifryMessage2.get(NewtifryMessageListActivity.context, lastMessageDetailId);
 			if (message == null) { // fix 1.3.0 to avoid crash in two pane mode
 				return true;
@@ -583,7 +529,7 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 	}
 	
 	public void sortBySource(MenuItem item)	{
-		if (this.sortBySource == false) {
+		if (!this.sortBySource) {
 			item.setTitle(R.string.sort_by_date);
 			this.sortBySource = true;
 		} else {
@@ -597,9 +543,9 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 
 	
 	public void deleteAll( boolean onlySeen ) {
-		if (Preferences.getConfirmDeleteAll(this) == true) {
+		if (Preferences.getConfirmDeleteAll(this)) {
 			deleteAllOption = onlySeen;
-			if (onlySeen == true) {
+			if (onlySeen) {
 				confirmDelete2(getString(R.string.confirm_delete_title), getString(R.string.confirm_delete_read_messages));
 			} else {
 				confirmDelete2(getString(R.string.confirm_delete_title), getString(R.string.confirm_delete_all_messages));
@@ -612,7 +558,7 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 	public void deleteAllAction( boolean onlySeen ) {
 		if (mTwoPane) {
 			// clear message detail fragment
-			if (onlySeen == true) {
+			if (onlySeen) {
 				NewtifryMessage2 message = NewtifryMessage2.get(NewtifryMessageListActivity.context, lastMessageDetailId);
 				if (message != null) {
 					return;
@@ -634,7 +580,7 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 	}
 
 	public void sortByPriority(MenuItem item) {
-		if (this.sortByPriority == false) {
+		if (!this.sortByPriority) {
 			item.setChecked(true);
 			this.sortByPriority = true;
 		} else {

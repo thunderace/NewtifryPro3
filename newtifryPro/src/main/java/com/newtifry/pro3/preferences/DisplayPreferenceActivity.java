@@ -78,7 +78,7 @@ public class DisplayPreferenceActivity extends AppCompatPreferenceActivity {
 		toggleUsePriorityColors(Preferences.getUsePriorityColor(this));
 
 		
-		purgeCachePreference = (Preference) findPreference(Preferences.PURGES_IMAGES_CACHE);
+		purgeCachePreference = findPreference(Preferences.PURGES_IMAGES_CACHE);
 		purgeCachePreference.setOnPreferenceClickListener(purgeImageCacheClickHandler);
 		setImageCacheNumber(-1);
 		if (UrlImageViewHelper.getCacheCount(this) == 0) {
@@ -115,11 +115,7 @@ public class DisplayPreferenceActivity extends AppCompatPreferenceActivity {
 		shrinkImagesCheckbox.setEnabled(showImage);
 		cacheImagesCheckbox.setEnabled(showImage);
 		preloadImagesCheckbox.setEnabled(showImage);
-		if (showImage == false || !cacheImagesCheckbox.isChecked()) {
-			cacheImageDurationEditText.setEnabled(false);
-		} else {
-			cacheImageDurationEditText.setEnabled(true);
-		}
+        cacheImageDurationEditText.setEnabled(showImage && cacheImagesCheckbox.isChecked());
 	}
 	
 	OnPreferenceChangeListener shrinkImageChangeHandler = new OnPreferenceChangeListener() {

@@ -205,7 +205,7 @@ public class Preferences {
 	}
 	
     public static boolean getSpeakByPriority(Context context, int priority) {
-    	if (getSettings(context).getBoolean(SPEAK_MESSAGE, true) == false) {
+    	if (!getSettings(context).getBoolean(SPEAK_MESSAGE, true)) {
     		return false;
     	}
 		switch(priority) {
@@ -251,7 +251,7 @@ public class Preferences {
 	}
 	
 	public static boolean getPreloadBitmap(Context context) {
-		if (getShowImages(context) == false) {
+		if (!getShowImages(context)) {
 			return false;
 		}
 		return getSettings(context).getBoolean(PRELOAD_IMAGES, true);
@@ -507,7 +507,7 @@ public class Preferences {
 
 	public static int getNotificationVisibility(Context context, int priority) {
 		String entry = GLOBAL_NOTIFICATION_VISIBILITY;
-		if (getSettings(context).getBoolean(USE_BY_PRIORITY_NOTIFICATION_VISIBILITY, false) == true) {
+		if (getSettings(context).getBoolean(USE_BY_PRIORITY_NOTIFICATION_VISIBILITY, false)) {
 			switch (priority) {
 				case 3:
 					entry = ALERT_NOTIFICATION_VISIBILITY;

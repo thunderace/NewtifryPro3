@@ -5,11 +5,11 @@ import java.io.InputStream;
 import android.content.Context;
 
 public interface UrlDownloader {
-    public static interface UrlDownloaderCallback {
-        public void onDownloadComplete(UrlDownloader downloader, InputStream in, String filename);
+    interface UrlDownloaderCallback {
+        void onDownloadComplete(UrlDownloader downloader, InputStream in, String filename);
     }
     
-    public void download(Context context, String url, String filename, UrlDownloaderCallback callback, Runnable completion, int timeout);
-    public boolean allowCache();
-    public boolean canDownloadUrl(String url);
+    void download(Context context, String url, String filename, UrlDownloaderCallback callback, Runnable completion, int timeout);
+    boolean allowCache();
+    boolean canDownloadUrl(String url);
 }

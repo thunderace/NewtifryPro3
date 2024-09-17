@@ -56,11 +56,7 @@ public class NotificationVisibilityPreferenceActivity extends AppCompatPreferenc
     };
 
     public void toggleUseVisibilityByPriorityPreferences( boolean useByProritySound ) {
-        if (useByProritySound) {
-            globalNotificationVisibility.setEnabled(false);
-        } else {
-            globalNotificationVisibility.setEnabled(true);
-        }
+        globalNotificationVisibility.setEnabled(!useByProritySound);
     }
 
     Preference.OnPreferenceChangeListener onNotificationPreferenceChanged = new Preference.OnPreferenceChangeListener() {

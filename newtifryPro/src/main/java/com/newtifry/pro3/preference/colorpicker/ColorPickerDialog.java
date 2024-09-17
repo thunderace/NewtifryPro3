@@ -58,7 +58,7 @@ public class ColorPickerDialog
 	private OnColorChangedListener mListener;
 
 	public interface OnColorChangedListener {
-		public void onColorChanged(int color);
+		void onColorChanged(int color);
 	}
 	
 	public ColorPickerDialog(Context context, int initialColor) {
@@ -85,11 +85,11 @@ public class ColorPickerDialog
 
 		setTitle(R.string.dialog_color_picker);
 		
-		mColorPicker = (ColorPickerView) layout.findViewById(R.id.color_picker_view);
-		mOldColor = (ColorPickerPanelView) layout.findViewById(R.id.old_color_panel);
-		mNewColor = (ColorPickerPanelView) layout.findViewById(R.id.new_color_panel);
+		mColorPicker = layout.findViewById(R.id.color_picker_view);
+		mOldColor = layout.findViewById(R.id.old_color_panel);
+		mNewColor = layout.findViewById(R.id.new_color_panel);
 		
-		mHexVal = (EditText) layout.findViewById(R.id.hex_val);
+		mHexVal = layout.findViewById(R.id.hex_val);
 		mHexVal.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 		mHexDefaultTextColor = mHexVal.getTextColors();
 		

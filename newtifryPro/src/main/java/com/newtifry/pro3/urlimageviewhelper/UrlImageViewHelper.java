@@ -141,7 +141,7 @@ public final class UrlImageViewHelper {
     	UrlImageViewHelper.timeout = timeout;
     }
 
-	private static UrlImageViewCallback defaultCallback = new UrlImageViewCallback() {
+	private static final UrlImageViewCallback defaultCallback = new UrlImageViewCallback() {
 	    @Override
 	    public void onLoaded(Context context, 
 	    						ImageView imageView,
@@ -155,7 +155,7 @@ public final class UrlImageViewHelper {
 				return;
 			}
 	    	if (loadedBitmap == null) {
-	    		if (CommonUtilities.okToDownloadData(context) == false) {
+	    		if (!CommonUtilities.okToDownloadData(context)) {
 		    		message.setImageLoadingStatus(imageId, NewtifryMessage2.IMAGE_NOT_LOADED);
 	    		} else {
 		    		message.setImageLoadingStatus(imageId, NewtifryMessage2.IMAGE_LOADING_ERROR);
@@ -355,7 +355,7 @@ public final class UrlImageViewHelper {
             return;
         }
 
-        if (CommonUtilities.okToDownloadData(context) == false) {
+        if (!CommonUtilities.okToDownloadData(context)) {
             callback.onLoaded(context, imageView, null, messageId, imageId, url, true);
         	return; // no image in cache and no wifi
         }
@@ -509,9 +509,9 @@ public final class UrlImageViewHelper {
         Bitmap result;
     }
     
-    private static HttpUrlDownloader mHttpDownloader = new HttpUrlDownloader();
-    private static FileUrlDownloader mFileDownloader = new FileUrlDownloader();
-    private static ArrayList<UrlDownloader> mDownloaders = new ArrayList<UrlDownloader>();
+    private static final HttpUrlDownloader mHttpDownloader = new HttpUrlDownloader();
+    private static final FileUrlDownloader mFileDownloader = new FileUrlDownloader();
+    private static final ArrayList<UrlDownloader> mDownloaders = new ArrayList<UrlDownloader>();
     public static ArrayList<UrlDownloader> getDownloaders() {
         return mDownloaders;
     }
@@ -521,8 +521,8 @@ public final class UrlImageViewHelper {
         mDownloaders.add(mFileDownloader);
     }
     
-    public static interface RequestPropertiesCallback {
-        public ArrayList<NameValuePair> getHeadersForRequest(Context context, String url);
+    public interface RequestPropertiesCallback {
+        ArrayList<NameValuePair> getHeadersForRequest(Context context, String url);
     }
 
     private static RequestPropertiesCallback mRequestPropertiesCallback;
@@ -535,9 +535,9 @@ public final class UrlImageViewHelper {
         mRequestPropertiesCallback = callback;
     }
 
-    private static DrawableCache mLiveCache = DrawableCache.getInstance();
+    private static final DrawableCache mLiveCache = DrawableCache.getInstance();
     private static LruBitmapCache mDeadCache;
-    private static HashSet<Bitmap> mAllCache = new HashSet<Bitmap>();
+    private static final HashSet<Bitmap> mAllCache = new HashSet<Bitmap>();
 
     private static int getHeapSize(final Context context) {
         return ((ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass() * 1024 * 1024;
@@ -635,8 +635,8 @@ public final class UrlImageViewHelper {
         return mPendingDownloads.size();
     }
 
-    private static Hashtable<ImageView, String> mPendingViews = new Hashtable<ImageView, String>();
-    private static Hashtable<String, ArrayList<ImageView>> mPendingDownloads = new Hashtable<String, ArrayList<ImageView>>();
+    private static final Hashtable<ImageView, String> mPendingViews = new Hashtable<ImageView, String>();
+    private static final Hashtable<String, ArrayList<ImageView>> mPendingDownloads = new Hashtable<String, ArrayList<ImageView>>();
 }
 
 

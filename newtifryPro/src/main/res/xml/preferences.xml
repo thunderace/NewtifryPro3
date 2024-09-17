@@ -9,12 +9,6 @@
 			android:title="@string/email_fcmid"
 			android:enabled="true"
 			android:selectable="true"/>
-		<Preference
-			android:key="preference_test"
-			android:summary="@string/serverless_mode_test_summary"
-			android:title="@string/serverless_mode_test"
-			android:enabled="true"
-			android:selectable="true"/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/notification_settings_category" >
     	<CheckBoxPreference 

@@ -16,7 +16,7 @@ public class EventEditActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_edit_empty);
-		final Button okButton = (Button)findViewById(R.id.tasker_edit_event_OK);
+		final Button okButton = findViewById(R.id.tasker_edit_event_OK);
 		okButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				endConfiguration();

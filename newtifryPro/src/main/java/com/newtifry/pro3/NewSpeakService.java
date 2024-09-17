@@ -38,7 +38,7 @@ public class NewSpeakService extends Service implements SensorEventListener, Tex
 	private static TextToSpeech tts = null;
 	private static AudioManager audioManager;
 	private static Notification speakNotification;
-	private Vector<String> queue = new Vector<String>();
+	private final Vector<String> queue = new Vector<String>();
 	private boolean initialized = false;
 	private boolean temporaryDisable = false;
 	private SensorManager sensorMgr = null;
@@ -46,9 +46,9 @@ public class NewSpeakService extends Service implements SensorEventListener, Tex
 	private float x, y, z;
 	private float last_x, last_y, last_z;
 	private boolean shakeSensingOn = false;
-	private NewSpeakService alternateThis = this;
+	private final NewSpeakService alternateThis = this;
 	private int shakeThreshold = 1500;
-	private HashMap<String, String> parameters = new HashMap<String, String>();
+	private final HashMap<String, String> parameters = new HashMap<String, String>();
 	
 	private final String UTTERANCE_ID = "NPUTID";
 
@@ -152,7 +152,7 @@ public class NewSpeakService extends Service implements SensorEventListener, Tex
 		stopForeground(true);
 	}
 
-	private Handler sensorOffHandler = new Handler() {
+	private final Handler sensorOffHandler = new Handler() {
 		public void handleMessage( Message msg ) {
 			if( sensorMgr != null ) {
 				sensorMgr.unregisterListener(alternateThis);
@@ -273,7 +273,7 @@ public class NewSpeakService extends Service implements SensorEventListener, Tex
 		// Once it's initialized, we then speak it normally without adding
 		// it to the queue.
 		synchronized( this.queue ) {
-			if( this.initialized == false) {
+			if(!this.initialized) {
 				this.queue.add(text);
 				Log.d(TAG, "Not initialised, so queueing.");
 				stopForeground(true);
@@ -289,7 +289,7 @@ public class NewSpeakService extends Service implements SensorEventListener, Tex
 	@Override
 	public void onDestroy() {
 		synchronized( this.queue ) {
-			this.tts.stop();
+			tts.stop();
 			tts.shutdown();
 			this.initialized = false;
 		}
@@ -338,7 +338,7 @@ public class NewSpeakService extends Service implements SensorEventListener, Tex
 
 	// Based on
 	// http://www.androidsoftwaredeveloper.com/2009/04/20/how-to-detect-call-state/
-	private PhoneStateListener mPhoneListener = new PhoneStateListener() {
+	private final PhoneStateListener mPhoneListener = new PhoneStateListener() {
 		public void onCallStateChanged( int state, String incomingNumber ) {
 			switch( state ) {
 				case TelephonyManager.CALL_STATE_RINGING:

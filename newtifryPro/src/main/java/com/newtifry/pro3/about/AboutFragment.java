@@ -22,7 +22,7 @@ public class AboutFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		WebView webView = (WebView) getActivity().findViewById(
+		WebView webView = getActivity().findViewById(
 				R.id.aboutlogcontent);
 		webView.loadUrl("file:///android_asset/" + getString(R.string.about_url_to_load) + ".html");
 	}			

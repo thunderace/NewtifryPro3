@@ -64,7 +64,7 @@ public class QuietPreferenceActivity extends AppCompatPreferenceActivity {
 				summary = getString(R.string.all_summary);
 	    	} else {
 		        for (String value : stringSet) {
-		        	if (first != true) {
+		        	if (!first) {
 		        		summary += ",";
 		        	}
 		        	if (value.equals("0")) {

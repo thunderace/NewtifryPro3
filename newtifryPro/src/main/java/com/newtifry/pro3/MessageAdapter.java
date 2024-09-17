@@ -56,12 +56,12 @@ public class MessageAdapter extends SimpleCursorAdapter {
         		convertView = this.layoutInflater.inflate(this.layoutBigRow, null);
 
         		viewHolder = new ViewHolder();
-	            viewHolder.sourceTextView = (TextView) convertView.findViewById(R.id.message_row_title_or_source);
-	            viewHolder.timestampTextView = (TextView) convertView.findViewById(R.id.message_row_timestamp);
-	            viewHolder.twoLinesMessageTextView = (TextView) convertView.findViewById(R.id.message_row_message_2_lines);
-	            viewHolder.urlImageView = (ImageView) convertView.findViewById(R.id.message_row_url);
-	            viewHolder.imageImageView = (ImageView) convertView.findViewById(R.id.message_row_image);
-	            viewHolder.stickyImageView = (ImageView) convertView.findViewById(R.id.message_row_sticky);
+	            viewHolder.sourceTextView = convertView.findViewById(R.id.message_row_title_or_source);
+	            viewHolder.timestampTextView = convertView.findViewById(R.id.message_row_timestamp);
+	            viewHolder.twoLinesMessageTextView = convertView.findViewById(R.id.message_row_message_2_lines);
+	            viewHolder.urlImageView = convertView.findViewById(R.id.message_row_url);
+	            viewHolder.imageImageView = convertView.findViewById(R.id.message_row_image);
+	            viewHolder.stickyImageView = convertView.findViewById(R.id.message_row_sticky);
 	            convertView.setTag(viewHolder);
 	        }
 	        else {
@@ -82,7 +82,7 @@ public class MessageAdapter extends SimpleCursorAdapter {
 			String title = mCursor.getString(mCursor.getColumnIndex(NewtifryDatabase.KEY_TITLE));
 			int seen = mCursor.getInt(mCursor.getColumnIndex(NewtifryDatabase.KEY_SEEN));
 			int priority = mCursor.getInt(mCursor.getColumnIndex(NewtifryDatabase.KEY_PRIORITY));
-			if (Preferences.getUsePriorityColor(NewtifryMessageListActivity.context) == true && priority > 0 ) {
+			if (Preferences.getUsePriorityColor(NewtifryMessageListActivity.context) && priority > 0 ) {
 				int bg = -1;
 				switch (priority) {
 					case 1 :
@@ -128,7 +128,7 @@ public class MessageAdapter extends SimpleCursorAdapter {
 			viewHolder.timestampTextView.setText(timestamp);
 
 			String msg = mCursor.getString(mCursor.getColumnIndex(NewtifryDatabase.KEY_MESSAGE));
-			if (Preferences.getUseSmallRow(context) == false) {
+			if (!Preferences.getUseSmallRow(context)) {
 				viewHolder.twoLinesMessageTextView.setText(msg + "\n");
 			} else {
 				viewHolder.twoLinesMessageTextView.setText(msg);
@@ -145,8 +145,8 @@ public class MessageAdapter extends SimpleCursorAdapter {
 			} else {
 				viewHolder.imageImageView.setVisibility(View.VISIBLE);
 			}
-			boolean locked = mCursor.getInt(mCursor.getColumnIndex(NewtifryDatabase.KEY_LOCKED)) == 0 ? false : true;
-			if(locked == true) {
+			boolean locked = mCursor.getInt(mCursor.getColumnIndex(NewtifryDatabase.KEY_LOCKED)) != 0;
+			if(locked) {
 				viewHolder.stickyImageView.setImageBitmap(this.lockBitmap);
 				viewHolder.stickyImageView.setVisibility(View.VISIBLE);
 			} else {

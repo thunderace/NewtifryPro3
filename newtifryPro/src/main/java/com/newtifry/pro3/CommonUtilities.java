@@ -26,15 +26,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.provider.Settings.Secure;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-
 import android.util.Log;
-
-import me.leolin.shortcutbadger.ShortcutBadger;
-
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
@@ -43,10 +37,8 @@ import static android.content.Context.NOTIFICATION_SERVICE;
  */
 public final class CommonUtilities {
     public static final String TAG = "NewtifryPro3";
-	public static final String FCM_UPDATE_INTENT = "com.newtifry.pro3.FCMUpdate";
 	public static final String MESSAGE_DDB_CHANGE_INTENT = "com.newtifry.pro3.DDBDeleteItem(s)";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
-	public static final String WEAR_NOTIFICATION_GROUP = "newtifry_pro_group";
     public static final String STOP_SPEAK = "stopNow";
 	public static final String SLEEP_NOTIFICATION_CHANNEL = "NPSleepChannel";
 	public static final String ALERT_NOTIFICATION_CHANNEL = "NPAlertChannel";
@@ -55,7 +47,7 @@ public final class CommonUtilities {
 	public static final String NO_PRIORITY_NOTIFICATION_CHANNEL = "NPNoPriorityChannel";
 
 	// startforegroung notification id
-	private static int SLEEP_NOTIFICATION_ID = 0XDEAD;
+	private static final int SLEEP_NOTIFICATION_ID = 0XDEAD;
 	public static final int ID_SPEAK_SERVICE = 1101;
 	public static final int ID_NOTIFICATION_SERVICE = 101;
 	public final String PRIORITY_NONE = "0";
@@ -85,7 +77,7 @@ public final class CommonUtilities {
 	}
 
 	public static boolean okToDownloadData(Context context) {
-		if (Preferences.onlyWifi(context) == false) {
+		if (!Preferences.onlyWifi(context)) {
 			return true;
 		}
 		ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE) ;
@@ -100,21 +92,6 @@ public final class CommonUtilities {
 		return list.size() > 0;
 	}
 
-/*
-	public static void checkNotifierPro(Context context) {
-		final PackageManager pm = context.getPackageManager();
-		//get a list of installed apps.
-		List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-		for (ApplicationInfo packageInfo : packages) {
-			if (packageInfo.packageName.equals("com.nlucas.notificationtoaster") || 
-					packageInfo.packageName.equals("com.nlucas.notificationtoasterlite")) {
-				Preferences.saveNotifierProInstalled(true, context);
-				return;
-			}
-		}
-		Preferences.saveNotifierProInstalled(false, context);
-	}
-*/
 	public static String getOutputMessage(NewtifryMessage2 message, Context context) {
 		String format = Preferences.getSpeakFormat(context);
 		
@@ -142,12 +119,9 @@ public final class CommonUtilities {
 		}
 		// check if we have a google account here
 		AccountManager manager = AccountManager.get(context);
-		Account[] accounts = manager.getAccountsByType("com.google");	
-		if (accounts.length == 0) {
-			return false;
-		}
-		return true;
-	}	
+		Account[] accounts = manager.getAccountsByType("com.google");
+        return accounts.length != 0;
+    }
 
 	public static void formatString( StringBuffer buffer, String keyword, String value )	{
 		int position = -1;
@@ -173,11 +147,9 @@ public final class CommonUtilities {
 	public static boolean isEmpty(String str) {
 		if (str == null)
 			return true;
-		if (str.equals(""))
-			return true;
-		return false;
-		
-	}
+        return str.isEmpty();
+
+    }
 	
 	public static void stopSpeak(Context context) {
 		Intent intentData = new Intent(context, NewSpeakService.class);
@@ -195,7 +167,7 @@ public final class CommonUtilities {
 
     public static int getAudioStream(Context context, boolean TTSAudioStream) {
 		String desiredStream;
-		if (TTSAudioStream == true) {
+		if (TTSAudioStream) {
 			desiredStream = Preferences.getTTSAudioStream(context);
 		} else {
 			desiredStream = Preferences.getNotificationAudioStream(context);
@@ -229,7 +201,7 @@ public final class CommonUtilities {
 	public static void sleepNotification(Context context, boolean show) {
 		NotificationManager mNotificationManager =
 			    (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-		if (show == false) {
+		if (!show) {
 			mNotificationManager.cancel(SLEEP_NOTIFICATION_ID);
 			return;
 		}
@@ -256,17 +228,17 @@ public final class CommonUtilities {
 			preventSleep = false;
 		}
 		boolean prevent = Preferences.preventCPUSleep(context);
-		if (invert == true) {
+		if (invert) {
 			prevent = !prevent;
 		}
-		if (prevent == true) {
-			if (preventSleep == false) {
+		if (prevent) {
+			if (!preventSleep) {
 				sleepNotification(context, true);
 				wl.acquire();
 				preventSleep = true;
 			}
 		} else {
-			if (preventSleep == true) {
+			if (preventSleep) {
 				sleepNotification(context, false);
 				wl.release();
 				preventSleep = false;
@@ -290,58 +262,16 @@ public final class CommonUtilities {
 	public static boolean isVersion(int version) {
 		return Build.VERSION.SDK_INT >= version;
 	}
-
-	public static boolean isEclair() {
-		return isVersion(Build.VERSION_CODES.ECLAIR);
-	}
-
-	public static boolean isFroyo() {
-		return isVersion(Build.VERSION_CODES.FROYO);
-	}
-
-	public static boolean isGingerbread() {
-		return isVersion(Build.VERSION_CODES.GINGERBREAD);
-	}
-
-	public static boolean isHoneycomb() {
-		return isVersion(Build.VERSION_CODES.HONEYCOMB);
-	}
-
-	public static boolean isIceCreamSandwich() {
-		return isVersion(Build.VERSION_CODES.ICE_CREAM_SANDWICH);
-	}
-
-	public static boolean isJellyBean() {
-		return isVersion(Build.VERSION_CODES.JELLY_BEAN);
-	}
-
-	public static void updateNovaUnreadCounter(Context context) {
-		int badgeCount = NewtifryMessage2.countUnread(context);
-		ShortcutBadger.applyCount(context, badgeCount); //for 1.1.4+
-/*
-		try {
-			ContentValues cv = new ContentValues();
-			cv.put("tag", "com.newtifry.pro3/com.newtifry.pro3.NewtifryMessageListActivity");
-			cv.put("count", count);
-			context.getContentResolver().insert(Uri
-							.parse("content://com.teslacoilsw.notifier/unread_count"),
-					cv);
-		} catch (IllegalArgumentException ex) {
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-*/
-	}
 	public static final int LOG_ERROR_LEVEL = 1;
 	public static final int LOG_VERBOSE_LEVEL = 3;
 
 	public static void log(int level, String title, String message) {
 		Log.d(title, message);
         Context context = NewtifryPro2App.getContext();
-		if (level == LOG_VERBOSE_LEVEL && Preferences.isVerboseLogLevel(context) == false) {
+		if (level == LOG_VERBOSE_LEVEL && !Preferences.isVerboseLogLevel(context)) {
 			return;
 		}
-		if(Preferences.isEmbededDebug(context) == false) {
+		if(!Preferences.isEmbededDebug(context)) {
 			return;
 		}
 		long debugMessageId = Preferences.getDebugMessageId(context);

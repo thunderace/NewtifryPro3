@@ -150,10 +150,7 @@ public class NewtificationService extends Service {
     	if (messagePriority < 0) {
     		return false;
     	}
-   		if(Preferences.getNotificationsEnable(this) == true) { 	
-   			return true;
-   		}
-   		return false;
+        return Preferences.getNotificationsEnable(this);
     }
 
     private boolean shouldSpeakMessage(NewtifryMessage2 message, int messagePriority, int speakMessage) {
@@ -196,11 +193,8 @@ public class NewtificationService extends Service {
 		if (noSpeakLength != 0 && message.getTextMessage().length() > noSpeakLength) {
 			return false;
 		}
- 		
-   		if(Preferences.getSpeakMessage(this) == true && Preferences.getSpeakByPriority(this, messagePriority)) { 	
-   			return true;
-   		}
-   		return false;
+
+        return Preferences.getSpeakMessage(this) && Preferences.getSpeakByPriority(this, messagePriority);
     }
 
     @SuppressLint("InlinedApi")
@@ -264,7 +258,7 @@ public class NewtificationService extends Service {
 		String messagePriority = String.valueOf(_messagePriority);
 		Set<String> quietApplySet = Preferences.getQuietHoursPrioritiesApplication(this);
 
-		if (Preferences.getQuietHoursEnabled(this) == true && quietApplySet.contains(messagePriority)) {
+		if (Preferences.getQuietHoursEnabled(this) && quietApplySet.contains(messagePriority)) {
 			String quietHourStart = Preferences.getQuietHoursStartString(this);
 			String quietHourEnd = Preferences.getQuietHoursEndString(this);
 			// take a calendar and current time
@@ -277,14 +271,10 @@ public class NewtificationService extends Service {
 				if (calendarEnd.getTimeInMillis() < calendarStart.getTimeInMillis()) {
 					calendarEnd.add(Calendar.DATE, 1);
 				}
-				if (currentCalendar.before(calendarEnd)) {
-					return true;
-				}
+                return currentCalendar.before(calendarEnd);
 			} else {
 				if (calendarEnd.getTimeInMillis() < calendarStart.getTimeInMillis()) {
-					if (currentCalendar.before(calendarEnd)) {
-						return true;
-					}
+                    return currentCalendar.before(calendarEnd);
 				}
 			}
 		}
@@ -350,7 +340,7 @@ public class NewtificationService extends Service {
 				new NotificationCompat.Builder(this, CommonUtilities.getNotificationChannel(this, messageId))
 						.setCategory(NotificationCompat.CATEGORY_MESSAGE)
 						.setSmallIcon(R.drawable.ic_stat_statusbar_newtifrypro2)
-						.setOnlyAlertOnce(Preferences.getNotifyEverytime(this) == true ? false : true)
+						.setOnlyAlertOnce(Preferences.getNotifyEverytime(this) ? false : true)
 						.setWhen(System.currentTimeMillis())
 						.setDeleteIntent(cancelPendingIntent)
 						.setLargeIcon(bigNotificationIcon)
@@ -359,7 +349,7 @@ public class NewtificationService extends Service {
 						.setGroupSummary(false)
 						.setContentInfo("1");
 		notification.setVisibility(Preferences.getNotificationVisibility(this, message.getPriority()));
-		if (Preferences.getMaxPriority(this) == true) {
+		if (Preferences.getMaxPriority(this)) {
 			notification.setPriority(NotificationCompat.PRIORITY_MAX);
 		} else {
 			notification.setPriority(NotificationCompat.PRIORITY_DEFAULT);
@@ -417,11 +407,8 @@ public class NewtificationService extends Service {
 		long messageId = intent.getLongExtra("messageId", -1);
 		NewtifryMessage2 message = NewtifryMessage2.get(this, messageId);
 		String action = intent.getAction();
-		boolean updateNotification = false;
-		if (action != null && action.equals("UPDATE")) {
-			updateNotification = true;
-		}
-		if (message == null && updateNotification == false) {
+		boolean updateNotification = action != null && action.equals("UPDATE");
+        if (message == null && !updateNotification) {
 			stopForeground(true);
 			return result;
 		}
@@ -430,19 +417,19 @@ public class NewtificationService extends Service {
 		int messageNotify = intent.getIntExtra("notify", -1);
         boolean speak = false;
         int messagePriority = -1;
-        if (updateNotification == false) {
+        if (!updateNotification) {
             messagePriority = message.getPriority();
             speak = shouldSpeakMessage(message, messagePriority, messageSpeak);
-            if (speak == true) {
+            if (speak) {
                 CommonUtilities.speak(getBaseContext(), getOutputMessage(message));
             }
         }
 
-        if (updateNotification == false) {
+        if (!updateNotification) {
             notifyExternalsAppz(message, messageNotify);
         }
 		
-		if(shouldNotifyMessage(messagePriority, messageNotify) == true || updateNotification == true) {
+		if(shouldNotifyMessage(messagePriority, messageNotify) || updateNotification) {
 			NewtificationService.cancelUndoTimeout(this);
 			int unreadMessages = NewtifryMessage2.countUnread(this);
 			int newMessages = UniversalNotificationManager.getInstance(this).getNewMessagesCount();
@@ -478,7 +465,7 @@ public class NewtificationService extends Service {
 			NotificationCompat.Builder notification =
 			        new NotificationCompat.Builder(this, CommonUtilities.getNotificationChannel(this, messageId))
 						.setSmallIcon(R.drawable.ic_stat_statusbar_newtifrypro2)
-						.setOnlyAlertOnce(Preferences.getNotifyEverytime(this) == true ? false : true)
+						.setOnlyAlertOnce(Preferences.getNotifyEverytime(this) ? false : true)
 	//       				.setOngoing(true)  // for sticky notification
 						.setWhen(System.currentTimeMillis())
 	//			        .setAutoCancel(true)
@@ -491,14 +478,14 @@ public class NewtificationService extends Service {
 						.setContentInfo(Integer.toString(unreadMessages));
 			notification.setVisibility(Preferences.getNotificationVisibility(this, messagePriority));
 			//notification.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-			if (Preferences.getMaxPriority(this) == true) {
+			if (Preferences.getMaxPriority(this)) {
 				notification.setPriority(NotificationCompat.PRIORITY_MAX);
 			} else {
 				notification.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 			}
 			int defaults = 0;
 
-            if(newMessages == 1 && updateNotification == true) {
+            if(newMessages == 1 && updateNotification) {
                 // TODO : we have to get the last received messageId
                 // and update the message value
                 messageId = NewtifryMessage2.getLastMessageId(this);
@@ -545,8 +532,8 @@ public class NewtificationService extends Service {
 			}
             boolean vibrate = false;
 			boolean  noVibrate = intent.getBooleanExtra("novibrate", false);
-			if (updateNotification == false && isQuietHour(messagePriority) == false ) {  // dont vibrate on notification update
-				if( noVibrate == false && Preferences.getVibrateNotify(this) ) {
+			if (!updateNotification && !isQuietHour(messagePriority)) {  // dont vibrate on notification update
+				if( !noVibrate && Preferences.getVibrateNotify(this) ) {
 					/*
 					long[] vibratePattern = { 0, 500, 250, 500 };
 					notification.setVibrate(vibratePattern);
@@ -554,9 +541,9 @@ public class NewtificationService extends Service {
 					defaults |= Notification.DEFAULT_VIBRATE;
                     vibrate = true;
 				}
-				if( speak == false) {
+				if(!speak) {
 					String tone;
-					if (Preferences.getUseByPrioritySound(this) == true) {
+					if (Preferences.getUseByPrioritySound(this)) {
 						tone = Preferences.getByPriorityRingtone(this, messagePriority);
 					} else {
 						tone = Preferences.getGlobalRingtone(this);
@@ -591,7 +578,7 @@ public class NewtificationService extends Service {
 			notification.setDefaults(defaults);
 			Notification notif = notification.build();
 			NotificationManagerCompat.from(this).notify(UniversalNotificationManager.getMobileNotificationID(), notif);
-			if (CommonUtilities.isVersion(android.os.Build.VERSION_CODES.KITKAT) && updateNotification == false && Build.VERSION.SDK_INT < 26 /* Oreo */) {
+			if (CommonUtilities.isVersion(android.os.Build.VERSION_CODES.KITKAT) && !updateNotification && Build.VERSION.SDK_INT < 26 /* Oreo */) {
                 wearNotification.newMessage(message, vibrate);
             }
 		}
@@ -626,19 +613,19 @@ public class NewtificationService extends Service {
 		// for tasker
 		// build a bundle with data
 		Bundle bundleVars = new Bundle();
-		if (source != null && source.equals("") == false) {
+		if (source != null && !source.equals("")) {
 			bundleVars.putString("%npsource", source);
 		} else {
 			bundleVars.putString("%npsource", "No source");
 		}
 		bundleVars.putString("%nptitle", title);
-		if (messageContent != null && messageContent.equals("") == false) {
+		if (messageContent != null && !messageContent.equals("")) {
 			bundleVars.putString("%npmessage", messageContent);
 		} else {
 			bundleVars.putString("%npmessage", "No message");
 		}
 		bundleVars.putString("%nppriority", Integer.toString(priority));
-		if (url != null && url.equals("") == false) {
+		if (url != null && !url.equals("")) {
 			bundleVars.putString("%npurl", url);
 		} else {
 			bundleVars.putString("%npurl", "No url");
@@ -647,10 +634,10 @@ public class NewtificationService extends Service {
 		bundleVars.putString("%npimgcount", Integer.toString(imageCount));
 		if (imgArray != null) {
 			for (int i = 0; i < imageCount; i++) {
-				bundleVars.putString("%npimg" + Integer.toString(i+1), imgArray[i]);
+				bundleVars.putString("%npimg" + (i + 1), imgArray[i]);
 			}
 			for (int i = imageCount -1; i < 5; i++) {
-				bundleVars.putString("%npimg" + Integer.toString(i+1), "no image");
+				bundleVars.putString("%npimg" + (i + 1), "no image");
 			}
 		}
 		

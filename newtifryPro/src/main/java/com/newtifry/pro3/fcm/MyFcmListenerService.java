@@ -23,20 +23,16 @@ import static com.newtifry.pro3.CommonUtilities.LOG_VERBOSE_LEVEL;
 public class MyFcmListenerService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFcmListenerService";
-    private static boolean enable = true;
+    private static final boolean enable = true;
     private static PartialNewtifry2Message partialMessage;
     private static NewtifryMessage2 incoming = null;
     public static void messageProcess(Context context, NewtifryMessage2 message) {
-        if (Preferences.getShowImages(context) == true &&
-                Preferences.getPreloadBitmap(context) == true) {
+        if (Preferences.getShowImages(context) &&
+                Preferences.getPreloadBitmap(context)) {
             for (int i = 0; i < 5; i++) {
                 String image = message.getImage(i);
                 if (image != null && !image.equals("")) {
-                    if (Preferences.getCacheBitmap(context) == true && message.getNoCache() == false) {
-                        UrlImageViewHelper.loadUrl(context, message.getId(), i, image, null, true);
-                    } else {
-                        UrlImageViewHelper.loadUrl(context, message.getId(), i, image, null, false);
-                    }
+                    UrlImageViewHelper.loadUrl(context, message.getId(), i, image, null, Preferences.getCacheBitmap(context) && !message.getNoCache());
                 }
             }
         }
@@ -75,7 +71,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
             if (partialMessage == null) {
                 partialMessage = new PartialNewtifry2Message();
             }
-            if (partialMessage.init(partCount, currentPart, multipartHash) == true) {
+            if (partialMessage.init(partCount, currentPart, multipartHash)) {
                 incoming = partialMessage.addPart(multiPartMessage, currentPart, false);
                 if (incoming == null) {
                     return;
@@ -86,7 +82,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
             }
             // Persist this message to the database.
             incoming.save(this);
-            if (incoming.getPriority() > -1 || incoming.getNotify() == 1 || Preferences.showInvisibleMessages(this) == true) {
+            if (incoming.getPriority() > -1 || incoming.getNotify() == 1 || Preferences.showInvisibleMessages(this)) {
                 UniversalNotificationManager.getInstance(this).incNewMessagesCount();
             }
             messageProcess(this, incoming);
@@ -102,7 +98,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
             }
             // Persist this message to the database.
             message.save(this);
-            if (message.getPriority() > -1 || message.getNotify() == 1 || Preferences.showInvisibleMessages(this) == true) {
+            if (message.getPriority() > -1 || message.getNotify() == 1 || Preferences.showInvisibleMessages(this)) {
                 UniversalNotificationManager.getInstance(this).incNewMessagesCount();
             }
             messageProcess(this, message);

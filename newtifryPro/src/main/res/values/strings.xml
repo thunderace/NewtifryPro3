@@ -38,16 +38,10 @@
 <!-- PREFERENCES -->
     <string name="preferences">Preferences</string>
 	    <string name="serverless_settings_category">FCM settings</string>
-	    
 		    <string name="email_fcmid">Email Device ID</string>
 		    <string name="email_fcmid_summary">Email the FCM ID of this device.</string>
 			<string name="user_topic">Device topic (Prefix this topic with your deviceID to use it)</string>
 			<string name="user_topic_summary">Prefix this topic with your deviceID to use it</string>
-		    <string name="serverless_mode_test">Test</string>
-		    <string name="serverless_mode_test_summary">Send a message to your device.</string>
-			<string name="user_topic_error_title">Invalid topic name</string>
-			<string name="user_topic_error_text">Only a-z, A-Z, 0-9 and - are allowed (no space)</string>
-
 	    <string name="notification_settings_category">Notification Settings</string>
 	        <string name="notification_enable_checkbox">Enable notifications</string>
 	        <string name="always_notify_smartwatch_checkbox">Notify external apps</string>

@@ -23,6 +23,7 @@
 
 package com.h6ah4i.android.compat.preference;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -329,9 +330,7 @@ public class MultiSelectListPreferenceCompat extends DialogPreference {
             source.readStringArray(strings);
 
             final int stringCount = strings.length;
-            for (int i = 0; i < stringCount; i++) {
-                values.add(strings[i]);
-            }
+            values.addAll(Arrays.asList(strings).subList(0, stringCount));
             
             return values;
         }

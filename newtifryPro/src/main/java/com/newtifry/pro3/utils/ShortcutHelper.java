@@ -198,15 +198,15 @@ public class ShortcutHelper {
     }
 
     public void removeShortcut(ShortcutInfo shortcut) {
-        mShortcutManager.removeDynamicShortcuts(Arrays.asList(shortcut.getId()));
+        mShortcutManager.removeDynamicShortcuts(List.of(shortcut.getId()));
     }
 
     public void disableShortcut(ShortcutInfo shortcut) {
-        mShortcutManager.disableShortcuts(Arrays.asList(shortcut.getId()));
+        mShortcutManager.disableShortcuts(List.of(shortcut.getId()));
     }
 
     public void enableShortcut(ShortcutInfo shortcut) {
-        mShortcutManager.enableShortcuts(Arrays.asList(shortcut.getId()));
+        mShortcutManager.enableShortcuts(List.of(shortcut.getId()));
     }
 
     private Bitmap fetchFavicon(Uri uri) {

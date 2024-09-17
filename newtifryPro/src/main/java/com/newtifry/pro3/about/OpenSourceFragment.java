@@ -20,7 +20,7 @@ public class OpenSourceFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		WebView webView = (WebView) getActivity().findViewById(
+		WebView webView = getActivity().findViewById(
 				R.id.opensourcecontent);
 		webView.loadUrl("file:///android_asset/" + getString(R.string.help_opensource_url_to_load) + ".html");
 	}		

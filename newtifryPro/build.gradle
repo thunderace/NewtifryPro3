@@ -2,19 +2,11 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'com.google.gms.google-services'
 android {
-    signingConfigs {
-        release {
-            keyAlias 'newtifry.pro'
-            keyPassword 'rejane'
-            storePassword 'rejane'
-        }
-    }
     compileSdk 34
     defaultConfig {
         applicationId "com.newtifry.pro3"
         minSdkVersion 21
         targetSdkVersion 34
-        signingConfig signingConfigs.release
     }
     buildTypes {
         debug {
@@ -49,7 +41,6 @@ dependencies {
     implementation project(':localeapi')
     implementation project(':shared')
     implementation 'com.google.firebase:firebase-messaging'
-    implementation 'me.leolin:ShortcutBadger:1.1.17@aar'
     implementation 'commons-io:commons-io:2.13.0'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'

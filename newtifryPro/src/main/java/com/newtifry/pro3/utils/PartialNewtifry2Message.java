@@ -14,7 +14,7 @@ import org.json.JSONObject;
 public class PartialNewtifry2Message {
     private String hash = null;
     private int partCount = -1;
-    private String message[] = null;
+    private String[] message = null;
     private int partCounter = 0;
     public PartialNewtifry2Message() {
     }
@@ -28,10 +28,7 @@ public class PartialNewtifry2Message {
             return true;
         }
 
-        if (this.partCount == _partCount  && this.hash.equals(_hash)) {
-            return true;
-        }
-        return false;
+        return this.partCount == _partCount && this.hash.equals(_hash);
     }
 
     public NewtifryMessage2 addPart(String part, int partNumber, boolean fromSMS) {
@@ -136,9 +133,9 @@ public class PartialNewtifry2Message {
         }
         incoming.setTimestamp(timestamp); // will set to the current timestamp
         incoming.setPriority(priority);
-        incoming.setSticky(state == 1 ? true : false);
-        incoming.setLocked(state == 2 ? true : false);
-        incoming.setNoCache(nocache == 1 ? true : false);
+        incoming.setSticky(state == 1);
+        incoming.setLocked(state == 2);
+        incoming.setNoCache(nocache == 1);
         incoming.setSpeak(speak);
         incoming.setNotify(notify);
         return incoming;
