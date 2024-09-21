@@ -1,7 +1,10 @@
 package com.newtifry.pro3.utils;
 
+import static com.newtifry.pro3.CommonUtilities.LOG_VERBOSE_LEVEL;
+
 import android.util.Log;
 
+import com.newtifry.pro3.CommonUtilities;
 import com.newtifry.pro3.database.NewtifryMessage2;
 
 import org.json.JSONException;
@@ -33,11 +36,12 @@ public class PartialNewtifry2Message {
 
     public NewtifryMessage2 addPart(String part, int partNumber, boolean fromSMS) {
         if (part == null || part.equals("")) {
+            CommonUtilities.log(LOG_VERBOSE_LEVEL, "PartialNewtifry2Message", "PartialNewtifry2Message Error 1");
             return null;
         }
         this.message[partNumber-1] = part;
         this.partCounter++;
-        if (this.partCounter == this.partCount) {
+        if (this.partCounter == this.partCount) { // end of split message
             String partMessage = "";
             for (int i = 0; i < this.partCount; i++) {
                 partMessage += this.message[i];
@@ -47,6 +51,7 @@ public class PartialNewtifry2Message {
             this.reset();
             return msg;
         }
+        CommonUtilities.log(LOG_VERBOSE_LEVEL, "PartialNewtifry2Message", "PartialNewtifry2Message Error 2");
         return null;
     }
 

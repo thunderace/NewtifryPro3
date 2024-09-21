@@ -63,10 +63,10 @@ public class MyFcmListenerService extends FirebaseMessagingService {
             return;
         }
         if (type.equals("ntp_message_multi")) {
-            CommonUtilities.log(LOG_VERBOSE_LEVEL, TAG, "New multi message");
             String multipartHash = data.get("hash").toString();
             int partCount = Integer.parseInt(data.get("partcount").toString());
             int currentPart = Integer.parseInt(data.get("index").toString());
+            CommonUtilities.log(LOG_VERBOSE_LEVEL, TAG, "New multi message : part " + currentPart + " of " + partCount);
             String multiPartMessage = data.get("body").toString();
             if (partialMessage == null) {
                 partialMessage = new PartialNewtifry2Message();
@@ -74,10 +74,13 @@ public class MyFcmListenerService extends FirebaseMessagingService {
             if (partialMessage.init(partCount, currentPart, multipartHash)) {
                 incoming = partialMessage.addPart(multiPartMessage, currentPart, false);
                 if (incoming == null) {
+                    CommonUtilities.log(LOG_VERBOSE_LEVEL, TAG, "Multi message Error 1");
                     return;
                 }
                 partialMessage = null;
             } else {
+                CommonUtilities.log(LOG_VERBOSE_LEVEL, TAG, "Multi message Error 2");
+                partialMessage = null;
                 return;
             }
             // Persist this message to the database.
