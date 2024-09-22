@@ -13,6 +13,7 @@ import android.os.Bundle;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
@@ -25,6 +26,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
         long messageId = intent.getLongExtra(NewtifryProHelper.IntentExtras.ID, -1);
 
 ///////////////////// UNDO management
+        assert action != null;
         if (action.equals(NewtifryProHelper.NOTIFICATION_UNDO_DELETE)) {
 			NewtificationService.cancelUndoTimeout(context);
             if (messageId != -1) {
@@ -32,7 +34,6 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                 if (msg != null) {
                     msg.setDeleted(false);
                     msg.save(context);
-					// TODO restore the notification and don't speak again
 					UniversalNotificationManager.getInstance(context).incNewMessagesCount();
 					UniversalNotificationManager.reSendNotification(context, msg.getId());
 				}
@@ -52,8 +53,9 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
         if (action.equals(NewtifryProHelper.MESSAGE_CREATE)) { // From tasker
 			Bundle extras = intent.getExtras();
 			Map<String, Object> data = new HashMap<String, Object>();
-			for (String key : extras.keySet()) {
-				data.put(key, extras.get(key).toString());
+            assert extras != null;
+            for (String key : extras.keySet()) {
+				data.put(key, Objects.requireNonNull(extras.get(key)).toString());
 			}
 
 			NewtifryMessage2 message = NewtifryMessage2.fromFCM(data, false);
@@ -106,7 +108,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                     // possible only with only one new message so remove all wear notifications
                     //UniversalNotificationManager.getInstance(context).cancelAllWearNotifications();
 				} else {
-       				NewtifryProvider.deleteItem(context, messageId);
+					NewtifryProvider.deleteItem(context, messageId);
 					UniversalNotificationManager.getInstance(context).resetNewMessagesCount();
 				}
 

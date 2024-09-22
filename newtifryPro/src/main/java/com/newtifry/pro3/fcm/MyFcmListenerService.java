@@ -16,22 +16,24 @@ import com.newtifry.pro3.utils.PartialNewtifry2Message;
 import com.newtifry.pro3.utils.UniversalNotificationManager;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static com.newtifry.pro3.CommonUtilities.LOG_ERROR_LEVEL;
 import static com.newtifry.pro3.CommonUtilities.LOG_VERBOSE_LEVEL;
 
+import androidx.annotation.NonNull;
+
 public class MyFcmListenerService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFcmListenerService";
-    private static final boolean enable = true;
     private static PartialNewtifry2Message partialMessage;
-    private static NewtifryMessage2 incoming = null;
+
     public static void messageProcess(Context context, NewtifryMessage2 message) {
         if (Preferences.getShowImages(context) &&
                 Preferences.getPreloadBitmap(context)) {
             for (int i = 0; i < 5; i++) {
                 String image = message.getImage(i);
-                if (image != null && !image.equals("")) {
+                if (image != null && !image.isEmpty()) {
                     UrlImageViewHelper.loadUrl(context, message.getId(), i, image, null, Preferences.getCacheBitmap(context) && !message.getNoCache());
                 }
             }
@@ -43,44 +45,36 @@ public class MyFcmListenerService extends FirebaseMessagingService {
         UniversalNotificationManager.createNotification(context, message.getId(), message.getSpeak(), message.getNotify());
     }
 
-    /**
-     * Called when message is received.
-     *
-     * @param from SenderID of the sender.
-     * @param data Data bundle containing message data as key/value pairs.
-     *             For Set of keys use data.keySet().
-     */
-    // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage inMessage) {
-        Map data = inMessage.getData();
+        Map<String, String> data = inMessage.getData();
         // The server would have sent a message type.
         String type;
         try {
-            type = data.get("type").toString();
+            type = data.get("type");
         } catch (Exception e) {
             CommonUtilities.log(LOG_ERROR_LEVEL, "onMessageReceived", "No type entry in msg");
             return;
         }
+        assert type != null;
         if (type.equals("ntp_message_multi")) {
-            String multipartHash = data.get("hash").toString();
-            int partCount = Integer.parseInt(data.get("partcount").toString());
-            int currentPart = Integer.parseInt(data.get("index").toString());
+            String multipartHash = data.get("hash");
+            int partCount = Integer.parseInt(Objects.requireNonNull(data.get("partcount")));
+            int currentPart = Integer.parseInt(Objects.requireNonNull(data.get("index")));
             CommonUtilities.log(LOG_VERBOSE_LEVEL, TAG, "New multi message : part " + currentPart + " of " + partCount);
-            String multiPartMessage = data.get("body").toString();
+            String multiPartMessage = data.get("body");
             if (partialMessage == null) {
                 partialMessage = new PartialNewtifry2Message();
             }
+            NewtifryMessage2 incoming;
             if (partialMessage.init(partCount, currentPart, multipartHash)) {
-                incoming = partialMessage.addPart(multiPartMessage, currentPart, false);
-                if (incoming == null) {
-                    CommonUtilities.log(LOG_VERBOSE_LEVEL, TAG, "Multi message Error 1");
+                incoming = partialMessage.addPart(multiPartMessage, currentPart);
+                if (incoming == null) { // msg not complete
                     return;
                 }
-                partialMessage = null;
+                CommonUtilities.log(LOG_VERBOSE_LEVEL, TAG, "onMessageReceived : Multipart Message complete");
             } else {
-                CommonUtilities.log(LOG_VERBOSE_LEVEL, TAG, "Multi message Error 2");
-                partialMessage = null;
+                CommonUtilities.log(LOG_VERBOSE_LEVEL, TAG, "onMessageReceived : init error");
                 return;
             }
             // Persist this message to the database.
@@ -111,7 +105,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
 
     // [END receive_message]
     @Override
-    public void onNewToken(String token) {
+    public void onNewToken(@NonNull String token) {
         // do nothing
         String curToken = Preferences.getToken(this);
         if (curToken != token) {

@@ -17,6 +17,7 @@ import com.newtifry.pro3.Preferences;
 import com.newtifry.pro3.shared.NewtifryProHelper;
 import com.newtifry.pro3.utils.UniversalNotificationManager;
 
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -599,7 +600,7 @@ public class NewtifryMessage2 {
 				if (notify == 1 || notify == 0) {
 					incoming.setNotify(notify);
 				}
-			}catch( NumberFormatException ex ) {
+			} catch ( NumberFormatException ex ) {
 			}
 		}
 		
@@ -678,7 +679,8 @@ public class NewtifryMessage2 {
 		return values;
 	}
 
-	protected static NewtifryMessage2 inflate(Cursor cursor )	{
+	@SuppressLint("Range")
+    protected static NewtifryMessage2 inflate(Cursor cursor )	{
 		NewtifryMessage2 message = new NewtifryMessage2();
 		message.setId(cursor.getLong(cursor.getColumnIndex(NewtifryDatabase.KEY_ID)));
 		message.setTitle(cursor.getString(cursor.getColumnIndex(NewtifryDatabase.KEY_TITLE)));

@@ -34,7 +34,7 @@ public class PartialNewtifry2Message {
         return this.partCount == _partCount && this.hash.equals(_hash);
     }
 
-    public NewtifryMessage2 addPart(String part, int partNumber, boolean fromSMS) {
+    public NewtifryMessage2 addPart(String part, int partNumber) {
         if (part == null || part.equals("")) {
             CommonUtilities.log(LOG_VERBOSE_LEVEL, "PartialNewtifry2Message", "PartialNewtifry2Message Error 1");
             return null;
@@ -42,16 +42,15 @@ public class PartialNewtifry2Message {
         this.message[partNumber-1] = part;
         this.partCounter++;
         if (this.partCounter == this.partCount) { // end of split message
-            String partMessage = "";
+            StringBuilder partMessage = new StringBuilder();
             for (int i = 0; i < this.partCount; i++) {
-                partMessage += this.message[i];
+                partMessage.append(this.message[i]);
             }
             NewtifryMessage2 msg;
-            msg = jsonToMessage(partMessage, fromSMS);
+            msg = jsonToMessage(partMessage.toString());
             this.reset();
             return msg;
         }
-        CommonUtilities.log(LOG_VERBOSE_LEVEL, "PartialNewtifry2Message", "PartialNewtifry2Message Error 2");
         return null;
     }
 
@@ -62,13 +61,9 @@ public class PartialNewtifry2Message {
         this.partCounter = 0;
     }
 
-    public static NewtifryMessage2 jsonToMessage(String jsonMessage, boolean fromSMS) {
+    public static NewtifryMessage2 jsonToMessage(String jsonMessage) {
         if (jsonMessage == null || jsonMessage.equals("")) {
             return null;
-        }
-        if (fromSMS) {
-            String smsMsg = NewtifryMessage2.decode(jsonMessage, true);
-            jsonMessage = smsMsg;
         }
         JSONObject jsonNP;
         try {
@@ -93,29 +88,16 @@ public class PartialNewtifry2Message {
         int speak = -1;
         int state = 0;
         int nocache = 0;
-        if (fromSMS) {
-            source = getJsonDataString(jsonNP, "source");
-            title = getJsonDataString(jsonNP, "title");
-            message = getJsonDataString(jsonNP, "message");
-            url = getJsonDataString(jsonNP, "url");
-            image = getJsonDataString(jsonNP, "image");
-            image1 = getJsonDataString(jsonNP, "image1");
-            image2 = getJsonDataString(jsonNP, "image2");
-            image3 = getJsonDataString(jsonNP, "image3");
-            image4 = getJsonDataString(jsonNP, "image4");
-            image5 = getJsonDataString(jsonNP, "image5");
-        } else {
-            source = NewtifryMessage2.decode(getJsonDataString(jsonNP, "source"), true);
-            title = NewtifryMessage2.decode(getJsonDataString(jsonNP, "title"), true);
-            message = NewtifryMessage2.decode(getJsonDataString(jsonNP, "message"), true);
-            url = NewtifryMessage2.decode(getJsonDataString(jsonNP, "url"), true);
-            image = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image"), true);
-            image1 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image1"), true);
-            image2 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image2"), true);
-            image3 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image3"), true);
-            image4 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image4"), true);
-            image5 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image5"), true);
-        }
+        source = NewtifryMessage2.decode(getJsonDataString(jsonNP, "source"), true);
+        title = NewtifryMessage2.decode(getJsonDataString(jsonNP, "title"), true);
+        message = NewtifryMessage2.decode(getJsonDataString(jsonNP, "message"), true);
+        url = NewtifryMessage2.decode(getJsonDataString(jsonNP, "url"), true);
+        image = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image"), true);
+        image1 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image1"), true);
+        image2 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image2"), true);
+        image3 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image3"), true);
+        image4 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image4"), true);
+        image5 = NewtifryMessage2.decode(getJsonDataString(jsonNP, "image5"), true);
         timestamp = getJsonDataString(jsonNP, "timestamp");
         priority = getJsonDataInt(jsonNP, "NPpriority", 0);
         notify = getJsonDataInt(jsonNP, "notify", -1);
