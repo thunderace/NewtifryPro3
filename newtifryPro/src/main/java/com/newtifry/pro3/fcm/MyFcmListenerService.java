@@ -99,7 +99,6 @@ public class MyFcmListenerService extends FirebaseMessagingService {
                 UniversalNotificationManager.getInstance(this).incNewMessagesCount();
             }
             messageProcess(this, message);
-            //throw new RuntimeException("Boom!");
         }
     }
 

@@ -83,9 +83,8 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 	private MenuItem stickMenu;
 	private MenuItem unlockMenu;
 	private MenuItem markUnseenMenu;
-	
-	private View snackBarParentView;
-	private Snackbar mSnackBar;
+
+    private Snackbar mSnackBar;
 	MaterialDialog progressDialog = null;
 
 	private boolean deleteAllOption = false;
@@ -103,7 +102,7 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_newtifrymessage_list);
 		getSupportActionBar().setTitle(R.string.app_name);
-		snackBarParentView = findViewById(R.id.coordinatorLayout);
+        View snackBarParentView = findViewById(R.id.coordinatorLayout);
 		context = getApplicationContext();
 
 		if (savedInstanceState == null) {
