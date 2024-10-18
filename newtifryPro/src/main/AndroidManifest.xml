@@ -12,6 +12,7 @@
         tools:ignore="ScopedStorage" />
 	<uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 	<uses-feature android:name="android.hardware.telephony" android:required="false" />
 	<!--         for API < 13 -->
 	<supports-screens android:largeScreens="true" android:xlargeScreens="true"/>
@@ -155,6 +156,7 @@
             android:exported="false"/>
     	<service 
     	    android:name="com.newtifry.pro3.NewSpeakService"
+            android:foregroundServiceType="mediaPlayback"
     	    android:exported="false"/>
 
         <receiver android:name="com.newtifry.pro3.NotificationBroadcastReceiver"

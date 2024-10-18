@@ -36,7 +36,7 @@ public class NewtifryPro2App extends Application {
 					CommonUtilities.log( CommonUtilities.LOG_ERROR_LEVEL, "Crash", ex.getMessage());
 					PendingIntent myActivity = PendingIntent.getActivity(getContext(),
 							192837, new Intent(getContext(), NewtifryMessageListActivity.class),
-							PendingIntent.FLAG_ONE_SHOT);
+                            PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
 					AlarmManager alarmManager;
 					alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
