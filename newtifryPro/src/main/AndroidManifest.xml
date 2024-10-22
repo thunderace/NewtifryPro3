@@ -153,6 +153,7 @@
 
     	<service 
             android:name="com.newtifry.pro3.NewtificationService"
+            android:foregroundServiceType="shortService"
             android:exported="false"/>
     	<service 
     	    android:name="com.newtifry.pro3.NewSpeakService"
