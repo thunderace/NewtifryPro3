@@ -62,7 +62,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 			if (message.getPriority() > -1 || message.getNotify() == 1 || Preferences.showInvisibleMessages(context)) {
 				UniversalNotificationManager.getInstance(context).incNewMessagesCount();
 			}
-            MyFcmListenerService.messageProcess(context, message);
+            //MyFcmListenerService.messageProcess(context, message);
 			return;
 		}
 

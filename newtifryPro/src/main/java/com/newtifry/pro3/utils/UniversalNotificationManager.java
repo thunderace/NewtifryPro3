@@ -1,17 +1,27 @@
 package com.newtifry.pro3.utils;
 
+import static androidx.appcompat.graphics.drawable.DrawableContainerCompat.Api21Impl.getResources;
+import static com.newtifry.pro3.CommonUtilities.ID_NOTIFICATION_SERVICE;
+
+import android.Manifest;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
+
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
 
 import android.text.SpannableString;
@@ -23,13 +33,20 @@ import android.util.Log;
 
 import com.newtifry.pro3.CommonUtilities;
 import com.newtifry.pro3.NewtificationService;
+import com.newtifry.pro3.NewtifryMessageDetailActivity;
+import com.newtifry.pro3.NewtifryMessageDetailFragment;
+import com.newtifry.pro3.NewtifryMessageListActivity;
 import com.newtifry.pro3.NotificationBroadcastReceiver;
 import com.newtifry.pro3.Preferences;
 import com.newtifry.pro3.R;
 import com.newtifry.pro3.database.NewtifryMessage2;
 import com.newtifry.pro3.shared.NewtifryProHelper;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 public class UniversalNotificationManager {
     private final int maxStackedWearNotificationCount =  20;
@@ -41,7 +58,12 @@ public class UniversalNotificationManager {
     private final Bitmap background;
 
 	private int newMessageCount = 0;
-	public  int getNewMessagesCount() {
+    private Intent cancelIntent;
+    private PendingIntent cancelPendingIntent;
+    private Intent seenAllIntent;
+    private PendingIntent seenAllPendingIntent;
+
+    public  int getNewMessagesCount() {
 		return newMessageCount;
 	}
     public  int decreaseNewMessagesCount(int count) {
@@ -71,15 +93,296 @@ public class UniversalNotificationManager {
 	public void incNewMessagesCount() {
 		newMessageCount++;
 	}
+    private Calendar buildCalendar(String hour) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour.substring(0, 2)));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(hour.substring(3, 5)));
+        return calendar;
+    }
+    private boolean isQuietHour(int _messagePriority ) {
+        String messagePriority = String.valueOf(_messagePriority);
+        Set<String> quietApplySet = Preferences.getQuietHoursPrioritiesApplication(mContext);
+
+        if (Preferences.getQuietHoursEnabled(mContext) && quietApplySet.contains(messagePriority)) {
+            String quietHourStart = Preferences.getQuietHoursStartString(mContext);
+            String quietHourEnd = Preferences.getQuietHoursEndString(mContext);
+            // take a calendar and current time
+            Calendar calendarStart = buildCalendar(quietHourStart);
+            Calendar calendarEnd = buildCalendar(quietHourEnd);
+            Calendar currentCalendar = Calendar.getInstance();
+            currentCalendar.setTimeInMillis(System.currentTimeMillis());
+
+            if (currentCalendar.after(calendarStart)){
+                if (calendarEnd.getTimeInMillis() < calendarStart.getTimeInMillis()) {
+                    calendarEnd.add(Calendar.DATE, 1);
+                }
+                return currentCalendar.before(calendarEnd);
+            } else {
+                if (calendarEnd.getTimeInMillis() < calendarStart.getTimeInMillis()) {
+                    return currentCalendar.before(calendarEnd);
+                }
+            }
+        }
+        return false;
+    }
+    private boolean shouldSpeakMessage(NewtifryMessage2 message, int messagePriority, int speakMessage) {
+        if (speakMessage == 0) {
+            return false;
+        }
+        if (speakMessage == 1) {
+            return true;
+        }
+        if (messagePriority < 0) {
+            return false;
+        }
+        if (isQuietHour(messagePriority)) {
+            return false;
+        }
+        int noSpeakLength = 0;
+        try {
+            noSpeakLength = Integer.parseInt(Preferences.getNotSpeakLength(mContext));
+        } catch (Exception ex) {
+        }
+
+        if (noSpeakLength != 0 && message.getTextMessage().length() > noSpeakLength) {
+            return false;
+        }
+
+        return Preferences.getSpeakMessage(mContext) && Preferences.getSpeakByPriority(mContext, messagePriority);
+    }
+
+    public String getOutputMessage(NewtifryMessage2 message) {
+        String format = Preferences.getSpeakFormat(mContext);
+
+        StringBuffer buffer = new StringBuffer(format);
+        CommonUtilities.formatString(buffer, "%t", message.getTitle());
+        CommonUtilities.formatString(buffer, "%m", message.getTextMessage());
+        CommonUtilities.formatString(buffer, "%s", message.getSourceName());
+        CommonUtilities.formatString(buffer, "%%", "%");
+        try {
+            int maxLength = Integer.parseInt(Preferences.getMaxLength(mContext));
+            if (maxLength != 0) {
+                return buffer.toString().substring(0, maxLength);
+            }
+        } catch (Exception ex) {
+        }
+        return buffer.toString();
+    }
+
+    private boolean shouldNotifyMessage(int messagePriority, int messageNotify) {
+        if (messageNotify == 1) {
+            return true;
+        }
+        if (messageNotify == 0) {
+            return false;
+        }
+        if (messagePriority < 0) {
+            return false;
+        }
+        return Preferences.getNotificationsEnable(mContext);
+    }
+    public String getFormatedMessage(NewtifryMessage2 message, int newMessageCount) {
+        String format;
+        if (newMessageCount == 1) {
+            format = Preferences.getOneMessageNotificationFormat(mContext);
+        } else {
+            format = Preferences.getNotificationFormat(mContext);
+        }
+        StringBuffer buffer = new StringBuffer(format);
+        CommonUtilities.formatString(buffer, "%d", message.getDisplayTimestamp());
+        CommonUtilities.formatString(buffer, "%t", message.getTitle());
+        CommonUtilities.formatString(buffer, "%m", message.getTextMessage());
+        String source = message.getSourceName();
+        if (source != null && !source.isEmpty()) {
+            CommonUtilities.formatString(buffer, "%s", source);
+        } else {
+            CommonUtilities.formatString(buffer, "%s", "");
+        }
+        CommonUtilities.formatString(buffer, "%%", "%");
+        return buffer.toString();
+    }
+    private PendingIntent getDeleteOnePendingIntent(long messageId) {
+        Intent intent = new Intent(NewtifryProHelper.NOTIFICATION_DELETE)
+                .setClass(this, NotificationBroadcastReceiver.class);
+        intent.putExtra(NewtifryProHelper.IntentExtras.ID, messageId);
+        return PendingIntent.getBroadcast(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    }
+
+    private PendingIntent getSeenOnePendingIntent(long messageId) {
+        Intent intent = new Intent(NewtifryProHelper.NOTIFICATION_SEEN)
+                .setClass(this, NotificationBroadcastReceiver.class);
+        intent.putExtra(NewtifryProHelper.IntentExtras.ID, messageId);
+        return PendingIntent.getBroadcast(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    }
+
+	public void createNotification(Context context, long messageId, int messageSpeak, int messageNotify) {
+        if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        NewtifryMessage2 message = NewtifryMessage2.get(mContext, messageId);
+        boolean speak = shouldSpeakMessage(message, message.getPriority(), messageSpeak);
+        int messagePriority = message.getPriority();
+        if (speak) {
+            CommonUtilities.speak(mContext, getOutputMessage(message));
+        }
+
+        if(shouldNotifyMessage(messagePriority, messageNotify)) {
+            NewtificationService.cancelUndoTimeout(mContext);
+            int unreadMessages = NewtifryMessage2.countUnread(mContext);
+            int newMessages = UniversalNotificationManager.getInstance(mContext).getNewMessagesCount();
+            if (newMessages == 0) {
+                return;
+            }
+            List<String> inboxStyleStringArray = new ArrayList<String>();
+            String contentTitle;
+            if (newMessages == 1) {
+                contentTitle = mContext.getString(R.string.notificationFormatOne);
+				/*
+				displayOneMessage(messageId);
+				return;
+				*/
+            } else {
+                contentTitle = String.format(mContext.getString(R.string.notificationFormat), newMessages);
+            }
+            int limit = newMessages;
+            String lastString = null;
+            if (newMessages > 5) {
+                limit = 4; // keep one line for the 'X more messages'
+                lastString = String.format(mContext.getString(R.string.notificationXMoreMessages), newMessages - 4);
+            }
+            ArrayList<NewtifryMessage2> list = NewtifryMessage2.getUnreadMessages(mContext, limit);
+            for (NewtifryMessage2 msg : list) {
+                inboxStyleStringArray.add(getFormatedMessage(msg, newMessages));
+            }
+            if (lastString != null) {
+                inboxStyleStringArray.add(lastString);
+            }
+
+            NotificationCompat.Builder notification =
+                    new NotificationCompat.Builder(mContext, CommonUtilities.getNotificationChannel(mContext, messageId))
+                            .setSmallIcon(R.drawable.ic_stat_statusbar_newtifrypro2)
+                            .setOnlyAlertOnce(Preferences.getNotifyEverytime(mContext) ? false : true)
+                            //       				.setOngoing(true)  // for sticky notification
+                            .setWhen(System.currentTimeMillis())
+                            //			        .setAutoCancel(true)
+                            .setDeleteIntent(cancelPendingIntent)
+                            .setLargeIcon(bigNotificationIcon)
+                            .setLocalOnly(true)
+                            .setGroup(NewtifryProHelper.GROUP_KEY_MESSAGES)
+                            .setGroupSummary(true)
+                            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                            .setNumber(newMessages)
+                            .setContentInfo(Integer.toString(unreadMessages));
+            notification.setVisibility(Preferences.getNotificationVisibility(mContext, messagePriority));
+            //notification.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+            if (Preferences.getMaxPriority(mContext)) {
+                notification.setPriority(NotificationCompat.PRIORITY_MAX);
+            } else {
+                notification.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            }
+            int defaults = 0;
+
+            if(newMessages == 1) {
+                NotificationCompat.Action deleteAction;
+                NotificationCompat.Action seenAction;
+                if (Preferences.getUseBlackActionIcons(mContext)) {
+                    deleteAction = new NotificationCompat.Action.Builder(R.drawable.ic_delete_black_24dp, mContext.getString(R.string.notificationDeleteLabel), getDeleteOnePendingIntent(messageId)).build();
+                    seenAction = new NotificationCompat.Action.Builder(R.drawable.ic_visibility_black_24dp, mContext.getString(R.string.notificationSeenLabel), getSeenOnePendingIntent(messageId)).build();
+                } else {
+                    deleteAction = new NotificationCompat.Action.Builder(R.drawable.ic_delete_white_24dp, mContext.getString(R.string.notificationDeleteLabel), getDeleteOnePendingIntent(messageId)).build();
+                    seenAction = new NotificationCompat.Action.Builder(R.drawable.ic_visibility_white_24dp, mContext.getString(R.string.notificationSeenLabel), getSeenOnePendingIntent(messageId)).build();
+                }
+                notification.addAction(deleteAction);
+                notification.addAction(seenAction);
+            } else {
+                if (Preferences.getUseBlackActionIcons(mContext)) {
+                    notification.addAction(seenAllActionBlack);
+                } else {
+                    notification.addAction(seenAllAction);
+                }
+            }
+
+            Intent notificationIntent;
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(mContext);
+            if(newMessages == 1) {
+                notificationIntent = new Intent(mContext, NewtifryMessageDetailActivity.class);
+                notificationIntent.putExtra(NewtifryMessageDetailFragment.ARG_ITEM_ID, messageId);
+                stackBuilder.addParentStack(NewtifryMessageDetailActivity.class);
+            } else {
+                notificationIntent = new Intent(mContext, NewtifryMessageListActivity.class);
+                stackBuilder.addParentStack(NewtifryMessageListActivity.class);
+            }
+            stackBuilder.addNextIntent(notificationIntent);
+            PendingIntent contentIntent = stackBuilder.getPendingIntent(0,  PendingIntent.FLAG_UPDATE_CURRENT| PendingIntent.FLAG_IMMUTABLE);
+            notification.setContentIntent(contentIntent);
+
+            if( Preferences.getLedFlash(mContext)) {
+                //notification.setLights( 0xff00ff00, 300, 1000);
+                defaults |= Notification.DEFAULT_LIGHTS;
+            }
+            boolean vibrate = false;
+            boolean  noVibrate = intent.getBooleanExtra("novibrate", false);
+            if (!isQuietHour(messagePriority)) {  // dont vibrate on notification update
+                if( !noVibrate && Preferences.getVibrateNotify(mContext) ) {
+					/*
+					long[] vibratePattern = { 0, 500, 250, 500 };
+					notification.setVibrate(vibratePattern);
+					*/
+                    defaults |= Notification.DEFAULT_VIBRATE;
+                    vibrate = true;
+                }
+                if(!speak) {
+                    String tone;
+                    if (Preferences.getUseByPrioritySound(mContext)) {
+                        tone = Preferences.getByPriorityRingtone(mContext, messagePriority);
+                    } else {
+                        tone = Preferences.getGlobalRingtone(mContext);
+                    }
+                    if (!tone.equals("")) {
+                        notification.setSound(Uri.parse(tone), CommonUtilities.getAudioStream(mContext, false));
+                    }
+                }
+            }
+            notification.setContentTitle(contentTitle);
+            if (newMessages == 1) {
+                String source = message.getSourceName();
+                if (source != null && !source.equals("")) {
+                    notification.setContentText(source + " - " + message.getTitle());
+                } else {
+                    notification.setContentText(message.getTitle());
+                }
+                NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
+                bigTextStyle.bigText(inboxStyleStringArray.get(0));
+                bigTextStyle.setSummaryText(mContext.getString(R.string.app_name));
+                notification.setStyle(bigTextStyle);
+            } else {
+                notification.setContentText(mContext.getString(R.string.app_name));
+                NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+                for (String str : inboxStyleStringArray) {
+                    inboxStyle.addLine(str);
+                }
+                inboxStyle.setSummaryText(mContext.getString(R.string.app_name));
+                notification.setStyle(inboxStyle);
+            }
+
+            notification.setDefaults(defaults);
+            Notification notif = notification.build();
+            NotificationManagerCompat.from(mContext).notify(UniversalNotificationManager.getMobileNotificationID(), notif);
+        }
 
 
-	public static void createNotification(Context context, long messageId, int speak, int notify) {
+
+        /*
 		Intent intentData = new Intent(context, NewtificationService.class);
 		intentData.putExtra("messageId", messageId);
 		intentData.putExtra("speak", speak);
         intentData.putExtra("notify", notify);
         Log.d("DBG", "from createNotification");
         ContextCompat.startForegroundService(context,intentData);
+*/
 	}
 
     public static void reSendNotification(Context context, long messageId) {
@@ -122,7 +425,7 @@ public class UniversalNotificationManager {
 	    mContext = context;
         initWearNotificationIdList();
         background = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
-	    newMessageCount = 0;
+        newMessageCount = 0;
     }
 
     private void createNotificationChannel() {
@@ -146,6 +449,27 @@ public class UniversalNotificationManager {
             channel = new NotificationChannel(CommonUtilities.NO_PRIORITY_NOTIFICATION_CHANNEL, name, NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
+        seenAllIntent = new Intent(this, NotificationBroadcastReceiver.class);
+        seenAllIntent.setAction(NewtifryProHelper.NOTIFICATION_SEEN_ALL);
+        seenAllPendingIntent = PendingIntent.getBroadcast(this.mContext, 0, seenAllIntent, PendingIntent.FLAG_IMMUTABLE);
+        cancelIntent = new Intent(NewtifryProHelper.NOTIFICATION_CANCEL)
+                .setClass(this, NotificationBroadcastReceiver.class);
+        cancelPendingIntent = PendingIntent.getBroadcast(this, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        int height = (int) getResources().getDimension(android.R.dimen.notification_large_icon_height);
+        int width = (int) getResources().getDimension(android.R.dimen.notification_large_icon_width);
+        this.bigNotificationIcon = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_launcher), width, height, false);
+        seenAllAction = new NotificationCompat.Action.Builder(R.drawable.ic_visibility_white_24dp , getString(R.string.notificationSeenAllLabel), seenAllPendingIntent).build();
+        seenAllActionBlack = new NotificationCompat.Action.Builder(R.drawable.ic_visibility_black_24dp , getString(R.string.notificationSeenAllLabel), seenAllPendingIntent).build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? createNotificationChannel(notificationManager) : "";
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
+        foregroundNotification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(R.drawable.ic_stat_statusbar_newtifrypro2)
+                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                .build();
+
     }
 
     private void initWearNotificationIdList() {
@@ -416,6 +740,9 @@ public class UniversalNotificationManager {
 //            wearNotification.addAction(actionSeenMobile);
 //            wearNotification.addAction(actionDeleteMobile);
 //        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         NotificationManagerCompat.from(mContext).notify(notifId + BASE_WEAR_NOTIFICATION_ID, wearNotification.build());
     }
 }

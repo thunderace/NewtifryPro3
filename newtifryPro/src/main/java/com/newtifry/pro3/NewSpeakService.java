@@ -175,8 +175,10 @@ public class NewSpeakService extends Service implements SensorEventListener, Tex
 				.build();
 
 		// Listen to the phone call state.
-		//TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-		//tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+		/*
+		TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+		tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+		*/
 
 		// Create the TTS object.
 		tts = new TextToSpeech(this, this);

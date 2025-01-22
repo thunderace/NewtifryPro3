@@ -1,13 +1,17 @@
 package com.newtifry.pro3.fcm;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.newtifry.pro3.CommonUtilities;
+import com.newtifry.pro3.NewtifryMessageListActivity;
 import com.newtifry.pro3.Preferences;
 import com.newtifry.pro3.R;
 import com.newtifry.pro3.database.NewtifryMessage2;
@@ -22,13 +26,18 @@ import static com.newtifry.pro3.CommonUtilities.LOG_ERROR_LEVEL;
 import static com.newtifry.pro3.CommonUtilities.LOG_VERBOSE_LEVEL;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+
 
 public class MyFcmListenerService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFcmListenerService";
     private static PartialNewtifry2Message partialMessage;
 
-    public static void messageProcess(Context context, NewtifryMessage2 message) {
+    public void messageProcess(Context context, NewtifryMessage2 message) {
         if (Preferences.getShowImages(context) &&
                 Preferences.getPreloadBitmap(context)) {
             for (int i = 0; i < 5; i++) {

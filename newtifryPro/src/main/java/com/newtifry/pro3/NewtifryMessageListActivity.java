@@ -14,10 +14,14 @@ import com.newtifry.pro3.database.NewtifryProvider;
 import com.newtifry.pro3.utils.ShortcutHelper;
 import com.newtifry.pro3.utils.UniversalNotificationManager;
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 
@@ -26,6 +30,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.core.view.MenuItemCompat;
@@ -433,6 +438,35 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 				message = NewtifryMessage2.fromDebug("haberet", "opulenti", 1, 0, 0);
 				message.setMessage("The less than (<) and <font color='green'>empersand</font> (&) must be <b>escaped</b> before using them in html");
 				message.save(this);
+/*
+				Intent intent = new Intent(this, NewtifryMessageListActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+						PendingIntent.FLAG_IMMUTABLE);
+
+				Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+				NotificationCompat.Builder notificationBuilder =
+						new NotificationCompat.Builder(this, CommonUtilities.getNotificationChannel(context, message.getId()))
+								.setSmallIcon(R.drawable.ic_stat_statusbar_newtifrypro2)
+								.setContentTitle(message.getTitle())
+								.setContentText(message.getMessage())
+								.setAutoCancel(true)
+								.setSound(defaultSoundUri)
+								.setContentIntent(pendingIntent);
+
+				NotificationManager notificationManager =
+						(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+				// Since android Oreo notification channel is needed.
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+					NotificationChannel channel = new NotificationChannel(CommonUtilities.getNotificationChannel(context, message.getId()),
+							"Channel human readable title",
+							NotificationManager.IMPORTANCE_DEFAULT);
+					notificationManager.createNotificationChannel(channel);
+				}
+
+				notificationManager.notify(0, notificationBuilder.build());
+*/
 				UniversalNotificationManager.getInstance(context).incNewMessagesCount();
 				UniversalNotificationManager.createNotification(this, message.getId(), 0, -1); // speak & notify default -> nothing
 
@@ -481,8 +515,8 @@ public class NewtifryMessageListActivity extends AppCompatActivity implements
 				sortByPriority(item);
 				return true;
 			case PREFERENCES_MENU_ID:
-				Intent intent = new Intent(this, NewtifryPreferenceActivity.class);
-				startActivity(intent);
+				Intent prefIntent = new Intent(this, NewtifryPreferenceActivity.class);
+				startActivity(prefIntent);
 				return true;
 			case STOP_SPEAK:
 				CommonUtilities.stopSpeak(this);

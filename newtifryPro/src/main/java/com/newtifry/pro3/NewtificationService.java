@@ -20,6 +20,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -32,6 +33,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.TaskStackBuilder;
@@ -104,6 +106,10 @@ public class NewtificationService extends Service {
      * alarm.
      */
     public static void createUndoNotification(Context context, long messageId) {
+		if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+			return;
+		}
+
 		final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CommonUtilities.getNotificationChannel(context, messageId))
 		        .setLocalOnly(true);
         // Sets the small icon for the ticker
@@ -136,7 +142,7 @@ public class NewtificationService extends Service {
          * See https://code.google.com/p/android/issues/detail?id=30495
          */
 	    builder.setContent(undoView);
-	    NotificationManagerCompat.from(context).notify(UniversalNotificationManager.getMobileNotificationID(), builder.build());
+        NotificationManagerCompat.from(context).notify(UniversalNotificationManager.getMobileNotificationID(), builder.build());
 	    registerUndoTimeout(context, messageId);
     }
 
@@ -233,8 +239,10 @@ public class NewtificationService extends Service {
 		String channelName = "My Foreground Service";
 		NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
 		// omitted the LED color
-		channel.setImportance(NotificationManager.IMPORTANCE_NONE);
+		channel.setImportance(NotificationManager.IMPORTANCE_LOW);
 		channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+		channel.setShowBadge(true);
+
 		notificationManager.createNotificationChannel(channel);
 		return channelId;
 	}
@@ -335,6 +343,9 @@ public class NewtificationService extends Service {
 		return calendar;
 	}
 	private void displayOneMessage(long messageId) {
+		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+			return;
+		}
 		NewtifryMessage2 message = NewtifryMessage2.get(this, messageId);
 		NotificationCompat.Builder notification =
 				new NotificationCompat.Builder(this, CommonUtilities.getNotificationChannel(this, messageId))
@@ -394,16 +405,18 @@ public class NewtificationService extends Service {
 
 	@Override
 	public int onStartCommand( Intent intent, int flags, int startId ) {
-		startForeground(ID_NOTIFICATION_SERVICE, foregroundNotification);
-		int result = super.onStartCommand(intent, flags, startId);
 		Log.d("DBG", "onStartCommand");
-
-		if( intent == null ) {
-			Log.d("DBG", "onStartCommand : intent NULL");
-			stopForeground(true);
+		int result = super.onStartCommand(intent, flags, startId);
+		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 			return result;
 		}
-		
+		if( intent == null ) {
+			Log.d("DBG", "onStartCommand : intent NULL");
+			return result;
+		}
+		startForeground(ID_NOTIFICATION_SERVICE, foregroundNotification);
+
+
 		long messageId = intent.getLongExtra("messageId", -1);
 		NewtifryMessage2 message = NewtifryMessage2.get(this, messageId);
 		String action = intent.getAction();
@@ -475,6 +488,7 @@ public class NewtificationService extends Service {
 						.setGroup(NewtifryProHelper.GROUP_KEY_MESSAGES)
 						.setGroupSummary(true)
 						.setCategory(NotificationCompat.CATEGORY_MESSAGE)
+						.setNumber(newMessages)
 						.setContentInfo(Integer.toString(unreadMessages));
 			notification.setVisibility(Preferences.getNotificationVisibility(this, messagePriority));
 			//notification.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
